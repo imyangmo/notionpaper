@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>{{indexTitle}}</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./style/basic_styles.css'>
+    <link rel="stylesheet" href="https://unpkg.com/simpledotcss/simple.min.css">
+</head>
+<body>
+    <div class="container">
+    {% with indexTitle = indexTitle %}
+        {% include 'header.html' %}
+    {% endwith %}
+    <div>
+        {% import 'elements.html' as eles %}
+        {% for each in contents %}
+            {{eles.indexli(each.date, each.title, each.addr)}}
+        {% endfor %}
+    </div>
+    {% include 'footer.html' %}
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Proxy settings (socks5)
+proxy: 
+  enable: false
+  address: 127.0.0.1
+  port: 7890
+
+# Table of contents page id
+toc_id: 917bbf26b01546a782cbf9d62b63ac3b
+
+# Notion api infos
+notion_token: secret_xxxx
+notion_version: '2022-02-22'
+# notion_version: '2021-05-13'
+notion_api_base_url: https://api.notion.com/v1/
+
+# Theme
+theme: simple

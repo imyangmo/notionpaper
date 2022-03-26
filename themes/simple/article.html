@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>{{pageInfo.pageTitle}} - {{indexTitle}}</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../style/basic_styles.css'>
+    <link rel="stylesheet" href="https://unpkg.com/simpledotcss/simple.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+{% if pageInfo.cover != None %}
+    <div style="position: absolute; height: 20vw;width: 100%;z-index: 0;">
+        <img src={{'./' + pageInfo.cover}} style="object-fit: cover;height: 100%;width: 100%;"></img>
+    </div>
+{% endif %}
+
+    <div class="container">
+    {% with indexTitle = indexTitle %}
+        {% include 'header_article.html' %}
+    {% endwith %}
+    <div>
+        <h1 class="page-title">{{pageInfo.pageTitle}}</h1>
+        
+{% import 'elements.html' as eles %}
+{% for each in contents %}
+    {% if each.type == 'heading_1' %}
+{{ eles.h1(each.text) }}
+    {% elif each.type == 'heading_2' %}
+{{ eles.h2(each.text) }}
+    {% elif each.type == 'heading_3' %}
+{{ eles.h3(each.text) }}
+    {% elif each.type == 'paragraph' %}
+{{ eles.p(each.text) }}
+    {% elif each.type == 'image' %}
+{{ eles.img(each.url) }}
+    {% elif each.type == 'table' %}
+{{ eles.table(each.rows) }}
+    {% elif each.type == 'bulleted_list_item' %}
+{{ eles.ul(each.listItems) }}
+    {% elif each.type == 'numbered_list_item' %}
+{{ eles.ol(each.listItems) }}
+    {% elif each.type == 'code' %}
+{{ eles.code(each.language, each.contents) }}
+    {% endif %}
+{% endfor %}
+    </div>
+    {% include 'footer.html' %}
+</div>
+</body>
+</html>

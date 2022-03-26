@@ -1,0 +1,118 @@
+{% macro indexli(date, title, addr) -%}
+    <li>
+        <span>{{date}}</span>
+        <a href={{addr + '/' + addr + '.html'}} class="tocTitle" >{{title}}</a>
+    </li>
+{%- endmacro %}
+<!-- Rich text objects -->
+<!-- See Notion API docs here: https://developers.notion.com/reference/rich-text -->
+{% macro span(anno, color, content) -%}
+    <span class="{{ anno + ' '+ color }}">{{content}}</span>
+{%- endmacro %}
+
+<!-- Heading objects -->
+{% macro h1(contents) -%}
+    <h2>
+        {% for each in contents %}
+            {{ span(each.annotations, each.color, each.content) }}
+        {% endfor %}
+    </h2>
+{%- endmacro %}
+
+{% macro h2(contents) -%}
+    <h3>
+        {% for each in contents %}
+            {{ span(each.annotations, each.color, each.content) }}
+        {% endfor %}
+    </h3>
+{%- endmacro %}
+
+{% macro h3(contents) -%}
+    <h4>
+        {% for each in contents %}
+            {{ span(each.annotations, each.color, each.content) }}
+        {% endfor %}
+    </h4>
+{%- endmacro %}
+
+<!-- Paragraph object -->
+{% macro p(contents) -%}
+    <p>
+        {% for each in contents %}
+            {{ span(each.annotations, each.color, each.content) }}
+        {% endfor %}
+    </p>
+{%- endmacro %}
+
+<!-- Divider object -->
+{% macro divider() -%}
+    <hr></hr>
+{%- endmacro %}
+
+<!-- Code -->
+{% macro code(language, contents) -%}
+<pre><code class={{language}}>
+{{contents}}
+</code></pre>
+{%- endmacro %}
+
+<!-- Image -->
+{% macro img(url) -%}
+    <img src={{'./' + url}}></img>
+{%- endmacro %}
+
+<!-- Table cell -->
+{% macro td(cell) -%}
+    <td>
+        {% for each in cell %}
+            {{ span(each.annotations, each.color, each.content) }}
+        {% endfor %}
+        
+    </td>
+{%- endmacro %}
+
+<!-- Table row -->
+{% macro tr(row) -%}
+    <tr>
+        {% for each in row %}
+            {{ td(each) }}
+        {% endfor %}
+    </tr>
+{%- endmacro %}
+
+<!-- Table -->
+{% macro table(rows) -%}
+    <table>
+        {% for each in rows %}
+            {{ tr(each) }}
+        {% endfor %}
+    </table>
+{%- endmacro %}
+
+<!-- Bulleted and numbered list item -->
+{% macro li(item) -%}
+    <li>
+        {% for each in item %}
+            {{ span(each.annotations, each.color, each.content) }}
+        {% endfor %}
+    </li>
+{%- endmacro %}
+
+
+<!-- Numbered list -->
+{% macro ol(listItems) -%}
+    <ol>
+        {% for each in listItems %}
+            {{ li(each) }}
+        {% endfor %}
+    </ol>
+{%- endmacro %}
+
+<!-- Bulleted list -->
+{% macro ul(listItems) -%}
+    <ul>
+        {% for each in listItems %}
+            {{ li(each) }}
+        {% endfor %}
+    </ul>
+{%- endmacro %}
