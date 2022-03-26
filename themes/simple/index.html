@@ -7,6 +7,16 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='./style/basic_styles.css'>
     <link rel="stylesheet" href="https://unpkg.com/simpledotcss/simple.min.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src={{'https://www.googletagmanager.com/gtag/js?id=' + ga}}></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '{{ga}}');
+    </script>
+
 </head>
 <body>
     <div class="container">

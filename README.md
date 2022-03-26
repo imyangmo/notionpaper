@@ -13,7 +13,7 @@ You are more than welcome to make this project better.
 ```
 
 ## How to use
-Complete guide on here (If you are an average user).
+Complete guide on [here](https://prelude.cc/c76ecb0140fb4b529bab6b5bdadd60d7/c76ecb0140fb4b529bab6b5bdadd60d7.html) .
 
 Short version:
 1. Clone this repo

@@ -6,15 +6,22 @@
 {%- endmacro %}
 <!-- Rich text objects -->
 <!-- See Notion API docs here: https://developers.notion.com/reference/rich-text -->
-{% macro span(anno, color, content) -%}
-    <span class="{{ anno + ' '+ color }}">{{content}}</span>
+
+{% macro span(anno, color, content, link) -%}
+{% if link == None %}
+<span class="{{ anno + ' '+ color }}">{{content}}</span>
+{% else %}
+<a href={{link}} class="{{ anno + ' '+ color }}">{{content}}</a>
+{% endif %}
 {%- endmacro %}
+
+
 
 <!-- Heading objects -->
 {% macro h1(contents) -%}
     <h2>
         {% for each in contents %}
-            {{ span(each.annotations, each.color, each.content) }}
+            {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
     </h2>
 {%- endmacro %}
@@ -22,7 +29,7 @@
 {% macro h2(contents) -%}
     <h3>
         {% for each in contents %}
-            {{ span(each.annotations, each.color, each.content) }}
+            {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
     </h3>
 {%- endmacro %}
@@ -30,7 +37,7 @@
 {% macro h3(contents) -%}
     <h4>
         {% for each in contents %}
-            {{ span(each.annotations, each.color, each.content) }}
+            {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
     </h4>
 {%- endmacro %}
@@ -39,7 +46,7 @@
 {% macro p(contents) -%}
     <p>
         {% for each in contents %}
-            {{ span(each.annotations, each.color, each.content) }}
+            {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
     </p>
 {%- endmacro %}
@@ -65,7 +72,7 @@
 {% macro td(cell) -%}
     <td>
         {% for each in cell %}
-            {{ span(each.annotations, each.color, each.content) }}
+            {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
         
     </td>
@@ -93,7 +100,7 @@
 {% macro li(item) -%}
     <li>
         {% for each in item %}
-            {{ span(each.annotations, each.color, each.content) }}
+            {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
     </li>
 {%- endmacro %}
@@ -116,3 +123,5 @@
         {% endfor %}
     </ul>
 {%- endmacro %}
+
+

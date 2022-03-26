@@ -63,7 +63,7 @@ def tocGenerator():
 
     template = env.get_template("index.html")
     print(parsedToc)
-    template.stream(indexTitle = global_indexTitle, contents = parsedToc).dump('./_prebuild/index.html')
+    template.stream(indexTitle = global_indexTitle, contents = parsedToc, ga = global_configs['google_analytics']).dump('./_prebuild/index.html')
 
 # END table of contents generator
 
@@ -105,6 +105,12 @@ def richTextParser(content):
             annotations = annotations + " " + key
 
     textBlock['annotations'] = annotations
+
+    if content['href'] != None:
+        textBlock['link'] = content['href']
+    else:
+        textBlock['link'] = None
+
     return(textBlock)
 
 def pageParser(pageId, results):
@@ -189,7 +195,7 @@ def pageParser(pageId, results):
 def pageGen(pageId, pageInfo, content, indexTitle):
     template = env.get_template("article.html")
     print(content)
-    template.stream(pageInfo=pageInfo, contents=content, indexTitle=indexTitle).dump('./_prebuild/' + pageId + '/' + pageId + '.html')
+    template.stream(pageInfo=pageInfo, contents=content, indexTitle=indexTitle, ga = global_configs['google_analytics']).dump('./_prebuild/' + pageId + '/' + pageId + '.html')
 
 def pageGenerator(pageIdList):
     for eachId in pageIdList:
