@@ -3,29 +3,36 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>{{indexTitle}}</title>
+    <title>{{index_object.site_name}}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='./style/basic_styles.css'>
     <link rel="stylesheet" href="https://unpkg.com/simpledotcss/simple.min.css">
+    {% if index_object.icon.type == 'emoji' %}
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{index_object.icon.emoji}}</text></svg>">
+    {% elif index_object.icon.type == 'file' %}
+    <link rel="icon" type="image/jpg" href="./favicon">
+    {% elif index_object.icon.type == 'external' %}
+    <link rel="icon" type="image/jpg" href={{index_object.icon.url}}>
+    {% endif %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src={{'https://www.googletagmanager.com/gtag/js?id=' + ga}}></script>
+    <script async src={{'https://www.googletagmanager.com/gtag/js?id=' + index_object.ga}}></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', '{{ga}}');
+        gtag('config', '{{index_object.ga}}');
     </script>
 
 </head>
 <body>
     <div class="container">
-    {% with indexTitle = indexTitle %}
+    {% with indexTitle = index_object.site_name %}
         {% include 'header.html' %}
     {% endwith %}
     <div>
         {% import 'elements.html' as eles %}
-        {% for each in contents %}
+        {% for each in index_object.contents %}
             {{eles.indexli(each.date, each.title, each.addr)}}
         {% endfor %}
     </div>

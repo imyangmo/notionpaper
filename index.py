@@ -1,5 +1,5 @@
 import requests, json, yaml, uuid
-import os, shutil
+import os, shutil, re
 import socket, socks
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -33,37 +33,92 @@ def tocGetter():
     r = requests.post(global_configs['notion_api_base_url'] + 'databases/' + global_configs['toc_id'] + '/query', headers=headers, data=query_body)
     return(r.json())
 
+def dateFormatter(date):
+    result = {}
+    timePattern = '(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d'
+    datePattern = '([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))'
+    
+    time = re.search(timePattern, date)
+    date = re.search(datePattern, date)
+
+    if time != None:
+        result['time'] = time.group()
+    else:
+        result['time'] = ''
+
+    if date != None:
+        result['date'] = date.group()
+    else:
+        result['date'] = ''
+
+    return(result)
+
+
 def tocParser(content):
     full = []
     for each in content:
         item = {}
-        item['date'] = each['properties']['Create Time']['created_time']
+        if 'Original Create Time' in each['properties'] and each['properties']['Original Create Time']['date'] != None:
+            item['date'] = dateFormatter(each['properties']['Original Create Time']['date']['start'])['date']
+            item['time'] = dateFormatter(each['properties']['Original Create Time']['date']['start'])['time']
+        else:
+            print('Original Create Time not found, or Original Create Time is empty, switch to Create Time')
+            if 'Create Time' in each['properties']:
+                item['date'] = dateFormatter(each['properties']['Create Time']['created_time'])['date']
+                item['time'] = dateFormatter(each['properties']['Create Time']['created_time'])['time']
+            else:
+                return({'code':'error', 'msg':'No Create Time or Original Create Time found'})
+
         item['title'] = each['properties']['Name']['title'][0]['text']['content']
         item['addr'] = each['url'][-32:]
+        # !!todo empty row handling
         global_pageList.append(each['url'][-32:])
         full.append(item)
     return(full)
 
 def tocGenerator():
+    indexObject = {}
     print("Retriving database infos")
     indexInfoJson = indexInfoGetter()
+    print(indexInfoJson)
     print("Done")
+
+    if indexInfoJson['object'] == 'error':
+        return({'code': 'error', 'msg':indexInfoJson['message']})
+        # {'object': 'error', 'status': 404, 'code': 'object_not_found', 'message': 'Could not find database with ID: a0cb2faf-978a-4843-b982-e943986fd3c5. Make sure the relevant pages and databases are shared with your integration.'} 
+
     global global_indexTitle
     global_indexTitle = indexInfoJson['title'][0]['plain_text']
+    indexObject['site_name'] = indexInfoJson['title'][0]['plain_text']
+
+    if indexInfoJson['icon'] != None:
+        if indexInfoJson['icon']['type'] == 'emoji':
+            indexObject['icon'] = {'type': 'emoji', 'emoji':indexInfoJson['icon']['emoji']}
+        elif indexInfoJson['icon']['type'] == 'file':
+            fileSaver(indexInfoJson['icon']['file']['url'], './_prebuild/favicon')
+            indexObject['icon'] = {'type': 'emoji'}
+        elif indexInfoJson['icon']['type'] == 'external':
+            indexObject['icon'] = {'type': 'external','url':indexInfoJson['icon']['external']['url']}
+    else:
+        indexObject['icon'] = None
+
     print("Retriving database pages")
     rawjson = tocGetter()
     print("Done")
     contents = rawjson['results']
+    print(json.dumps(contents))
     print("Generating TOC")
-    parsedToc = tocParser(contents)
+    indexObject['contents'] = tocParser(contents)
     print("Done")
-    # site.append(parsedToc)
 
-    print(global_pageList)
+    # print(global_pageList)
+    indexObject['ga'] = global_configs['google_analytics']
 
     template = env.get_template("index.html")
-    print(parsedToc)
-    template.stream(indexTitle = global_indexTitle, contents = parsedToc, ga = global_configs['google_analytics']).dump('./_prebuild/index.html')
+    print(indexObject)
+    template.stream(index_object = indexObject).dump('./_prebuild/index.html')
+
+    return({'code': 'ok', 'msg':''})
 
 # END table of contents generator
 
@@ -192,13 +247,9 @@ def pageParser(pageId, results):
 
     return(full)
 
-def pageGen(pageId, pageInfo, content, indexTitle):
-    template = env.get_template("article.html")
-    print(content)
-    template.stream(pageInfo=pageInfo, contents=content, indexTitle=indexTitle, ga = global_configs['google_analytics']).dump('./_prebuild/' + pageId + '/' + pageId + '.html')
-
 def pageGenerator(pageIdList):
     for eachId in pageIdList:
+        pageObject = {}
         # Create a dir for each page
         path = os.getcwd() + '/_prebuild/' + eachId
         os.makedirs(path)
@@ -217,27 +268,28 @@ def pageGenerator(pageIdList):
 
         # Fetch page information
         titleRst = pageInfoGetter(eachId)
-        # print(titleRst['properties']['Name'])
-        pageInfo = {}
-        pageInfo['pageTitle'] = titleRst['properties']['Name']['title'][0]['plain_text']
+        pageObject['page_title'] = titleRst['properties']['Name']['title'][0]['plain_text']
         
         if titleRst['cover'] == None:
-            pageInfo['cover'] = None
+            pageObject['cover'] = None
         elif titleRst['cover']['type'] == 'file':
             fileName = str(uuid.uuid1())
             print("Retriving cover image from {}".format(titleRst['cover']['file']['url']))
             fileSaver(titleRst['cover']['file']['url'], './_prebuild/' + eachId + '/' + fileName)
-            pageInfo['cover'] = fileName
+            pageObject['cover'] = fileName
         elif titleRst['cover']['type'] == 'external':
             fileName = str(uuid.uuid1())
             print("Retriving cover image from {}".format(titleRst['cover']['external']['url']))
             fileSaver(titleRst['cover']['external']['url'], './_prebuild/' + eachId + '/' + fileName)
-            pageInfo['cover'] = fileName
+            pageObject['cover'] = fileName
 
+        pageObject['site_name'] = global_indexTitle
+        pageObject['contents'] = pageContent
+        pageObject['ga'] = global_configs['google_analytics']
 
-
-
-        pageGen(eachId, pageInfo, pageContent, global_indexTitle)
+        template = env.get_template("article.html")
+        print(json.dumps(pageObject))
+        template.stream(page_object = pageObject).dump('./_prebuild/' + eachId + '/' + eachId + '.html')
 # END page generator
 
 # BEGIN before building
@@ -324,6 +376,11 @@ if __name__ == '__main__':
         # END Set up global variables
         proxySetter(global_configs['proxy'])
         buildDirPrep("./themes/" + global_configs['theme'] + "/style", "./_prebuild/style")
-        tocGenerator()
-        pageGenerator(global_pageList)
-        buildDirFinisher()
+        tocResult = tocGenerator()
+        if tocResult['code'] == 'ok':
+            pageGenerator(global_pageList)
+            buildDirFinisher()
+        else:
+            print(tocResult['msg'])
+            exit()
+        

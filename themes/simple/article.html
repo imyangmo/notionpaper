@@ -3,38 +3,38 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>{{pageInfo.pageTitle}} - {{indexTitle}}</title>
+    <title>{{page_object.page_title}} - {{page_object.site_name}}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='../style/basic_styles.css'>
     <link rel="stylesheet" href="https://unpkg.com/simpledotcss/simple.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src={{'https://www.googletagmanager.com/gtag/js?id=' + ga}}></script>
+    <script async src={{'https://www.googletagmanager.com/gtag/js?id=' + page_object.ga}}></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', '{{ga}}');
+        gtag('config', '{{page_object.ga}}');
     </script>
 </head>
 <body>
-{% if pageInfo.cover != None %}
+{% if page_object.cover != None %}
     <div style="position: absolute; height: 20vw;width: 100%;z-index: 0;">
-        <img src={{'./' + pageInfo.cover}} style="object-fit: cover;height: 100%;width: 100%;"></img>
+        <img src={{'./' + page_object.cover}} style="object-fit: cover;height: 100%;width: 100%;"></img>
     </div>
 {% endif %}
 
     <div class="container">
-    {% with indexTitle = indexTitle %}
+    {% with indexTitle = page_object.site_name %}
         {% include 'header_article.html' %}
     {% endwith %}
     <div>
-        <h1 class="page-title">{{pageInfo.pageTitle}}</h1>
+        <h1 class="page-title">{{page_object.page_title}}</h1>
         
 {% import 'elements.html' as eles %}
-{% for each in contents %}
+{% for each in page_object.contents %}
     {% if each.type == 'heading_1' %}
 {{ eles.h1(each.text) }}
     {% elif each.type == 'heading_2' %}
