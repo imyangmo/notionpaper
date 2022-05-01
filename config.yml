@@ -1,15 +1,14 @@
 # Proxy settings (socks5)
 proxy: 
-  enable: true
+  enable: false
   address: 127.0.0.1
   port: 7890
 
 # Table of contents page id
-toc_id: a0c...
+toc_id: 
 
 # Notion api infos
-notion_token: secret_...
-# inner test token
+notion_token: secret_
 notion_version: '2022-02-22'
 # notion_version: '2021-05-13'
 notion_api_base_url: https://api.notion.com/v1/
@@ -18,4 +17,4 @@ notion_api_base_url: https://api.notion.com/v1/
 theme: simple
 
 # Tracking code
-google_analytics: 'UA-...'
+google_analytics: 'UA-'

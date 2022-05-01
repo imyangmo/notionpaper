@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -8,7 +9,8 @@
     <link rel='stylesheet' type='text/css' media='screen' href='./style/basic_styles.css'>
     <link rel="stylesheet" href="https://unpkg.com/simpledotcss/simple.min.css">
     {% if index_object.icon.type == 'emoji' %}
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{index_object.icon.emoji}}</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{index_object.icon.emoji}}</text></svg>">
     {% elif index_object.icon.type == 'file' %}
     <link rel="icon" type="image/jpg" href="./favicon">
     {% elif index_object.icon.type == 'external' %}
@@ -18,11 +20,8 @@
     <script async src={{'https://www.googletagmanager.com/gtag/js?id=' + index_object.ga}}></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', '{{index_object.ga}}');
-    </script>
+        function gtag() { dataLayer.push(arguments); }
+        gtag(' js', new Date()); gtag('config', '{{index_object.ga}}'); </script>
 
 </head>
 <body>
@@ -30,13 +29,91 @@
     {% with indexTitle = index_object.site_name %}
         {% include 'header.html' %}
     {% endwith %}
-    <div>
+    <!-- <div>
         {% import 'elements.html' as eles %}
         {% for each in index_object.contents %}
             {{eles.indexli(each.date, each.title, each.addr)}}
         {% endfor %}
+    </div> -->
+    <div id="toc">
+
     </div>
     {% include 'footer.html' %}
 </div>
-</body>
+<script>
+    const index_object = {{ index_object | tojson}}
+
+    function bubbleSort(arr) {
+        var len = arr.length;
+        for (var i = 0; i < len - 1; i++) {
+            for (var j = 0; j < len - 1 - i; j++) {
+                if (arr[j].date < arr[j + 1].date) {
+                    var temp = arr[j + 1]
+                    arr[j + 1] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+
+    function yearOf(date) {
+        return date.split('-')[0]
+    }
+
+
+    let ordered_list = bubbleSort(index_object.contents)
+    let new_list = []
+    let year_list = []
+
+    ordered_list.forEach((obj, index) => {
+        if (!year_list.includes(yearOf(obj.date))) {
+            year_list.push(yearOf(obj.date))
+        }
+    })
+
+    year_list.forEach((item) => {
+        new_list.push({ 'year': item, 'list': [] })
+    })
+
+    new_list.forEach((item, index) => {
+        ordered_list.forEach((each, index) => {
+        })
+    })
+
+    ordered_list.forEach((each, index) => {
+        new_list.forEach((item, index) => {
+            if (item.year == yearOf(each.date)) {
+                item.list.push(each)
+            }
+        })
+    })
+
+    new_list.forEach((each) => {
+        heading = document.createElement("h2");
+        heading_text = document.createTextNode(each.year);
+        heading.appendChild(heading_text);
+
+        ul = document.createElement("ul")
+
+        each.list.forEach((item) => {
+            li = document.createElement("li")
+            a = document.createElement('a')
+            a.href = './' + item.addr + '/' + item.addr + '.html'
+            a_text = document.createTextNode(item.title)
+            a.appendChild(a_text)
+
+            li_text = document.createTextNode(item.date + ' ')
+            li.appendChild(li_text)
+            li.appendChild(a)
+            ul.appendChild(li)
+        })
+
+        document.getElementById("toc").appendChild(heading)
+        document.getElementById("toc").appendChild(ul)
+    })
+
+</script>
+    </body>
+
 </html>

@@ -24,13 +24,13 @@ Short version:
 6. Find your site in ```/public``` directory
 7. Upload the directory on any hosting services, and you are done.
 
-## Features (.. or soon to be features)
-- [x] You can input a database page which contains all your posts, and NotionPaper will generate a whole static blog site for you;
+## Supported Features (.. or soon to be features)
 - [ ] Page
     - [x] Page cover
-    - [ ] Page Icon
+    - [x] Page Icon
     - [ ] Page Tags
 - [ ] Supports parsing all types of blocks that Notion has;
+    - [x] Table of Contents
     - [x] Rich Texts (all anotations and text colors)
     - [x] Divider
     - [x] Paragraphs

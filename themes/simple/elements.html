@@ -122,4 +122,9 @@
     </ul>
 {%- endmacro %}
 
-
+<!-- Table of Contents -->
+{% macro toc(content) -%}
+{% for each in content %}
+<p>{{each.text}}</p>
+{% endfor %}
+{%- endmacro %}

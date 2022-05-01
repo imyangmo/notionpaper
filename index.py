@@ -153,11 +153,13 @@ def richTextParser(content):
     # Notion could display texts with strikethrough and underline simultaneously, but simply put two text decoration styles together will be override by another, so this needs to be handle seperately.
     if content['annotations']['strikethrough'] == True and content['annotations']['underline'] == True:
         annotations = annotations + " standul"
+    else:
     # Append rest of annotaitons
-    for key, value in content['annotations'].items():
-        if key != 'color' and key != 'strikethrough' and key != 'underline' and value != False:
-        # Skip color annotation and others that does not applied
-            annotations = annotations + " " + key
+        for key, value in content['annotations'].items():
+            # if key != 'color' and key != 'strikethrough' and key != 'underline' and value != False:
+            if key != 'color' and value != False:
+            # Skip color annotation and others that does not applied
+                annotations = annotations + " " + key
 
     textBlock['annotations'] = annotations
 
@@ -193,11 +195,12 @@ def pageParser(pageId, results):
                 fileSaver(each[each['type']]['file']['url'], './_prebuild/' + pageId + '/' + fileName)
                 block['url'] = fileName
             elif each[each['type']]['type'] == 'external':
-                fileName = str(uuid.uuid1())
-                print("Retriving image from {}".format(each[each['type']]['external']['url']))
+                # fileName = str(uuid.uuid1())
+                print("A external image, skip downloading")
+                block['type'] = 'image_external'
                 # urllib.request.urlretrieve(each[each['type']]['external']['url'],'./_prebuild/' + pageId + '/' + fileName )
-                fileSaver(each[each['type']]['external']['url'], './_prebuild/' + pageId + '/' + fileName)
-                block['url'] = fileName
+                # fileSaver(each[each['type']]['external']['url'], './_prebuild/' + pageId + '/' + fileName)
+                block['url'] = each[each['type']]['external']['url']
         elif each['type'] == 'table':
             block['rows'] = []
             tableContentRaw = pageBlockGetter(each['id'])
@@ -222,6 +225,20 @@ def pageParser(pageId, results):
             block['contents'] = ""
             for eachTxt in each[each['type']]['rich_text']:
                 block['contents'] = block['contents'] + eachTxt['plain_text']
+        elif each['type'] == 'table_of_contents':
+            block['contents'] = []
+            for item in results['results']:
+                levels = {
+                    "heading_1":1,
+                    "heading_2":2,
+                    "heading_3":3
+                }
+                if item['type'] in ['heading_1','heading_2','heading_3']:
+                    text = ""
+                    for span in item[item['type']]['rich_text']:
+                        text = text + span['plain_text']
+                    tocItem = {'level': levels[item['type']], 'text': text}
+                    block['contents'].append(tocItem)
 
         full.append(block)
 

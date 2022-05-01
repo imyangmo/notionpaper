@@ -53,10 +53,19 @@
 {{ eles.ol(each.listItems) }}
     {% elif each.type == 'code' %}
 {{ eles.code(each.language, each.contents) }}
+    {% elif each.type == 'divider' %}
+{{ eles.divider() }}
+    {% elif each.type == 'table_of_contents' %}
+{{ eles.toc(each.contents) }}
     {% endif %}
 {% endfor %}
     </div>
     {% include 'footer.html' %}
 </div>
+
+<script>
+    const page_object = {{ page_object | tojson}}
+    console.log(page_object)
+</script>
 </body>
 </html>
