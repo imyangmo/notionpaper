@@ -20,9 +20,13 @@
     </script>
 </head>
 <body>
-{% if page_object.cover != None %}
+{% if page_object.cover.type != None %}
     <div style="position: absolute; height: 20vw;width: 100%;z-index: 0;">
-        <img src={{'./' + page_object.cover}} style="object-fit: cover;height: 100%;width: 100%;"></img>
+        {% if page_object.cover.type == 'file' %}
+        <img src={{'./' + page_object.cover.fileName}} style="object-fit: cover;height: 100%;width: 100%;"></img>
+        {% elif page_object.cover.type == 'external' %}
+        <img src={{ page_object.cover.url }} style="object-fit: cover;height: 100%;width: 100%;"></img>
+        {% endif %}
     </div>
 {% endif %}
 
@@ -53,19 +57,10 @@
 {{ eles.ol(each.listItems) }}
     {% elif each.type == 'code' %}
 {{ eles.code(each.language, each.contents) }}
-    {% elif each.type == 'divider' %}
-{{ eles.divider() }}
-    {% elif each.type == 'table_of_contents' %}
-{{ eles.toc(each.contents) }}
     {% endif %}
 {% endfor %}
     </div>
     {% include 'footer.html' %}
 </div>
-
-<script>
-    const page_object = {{ page_object | tojson}}
-    console.log(page_object)
-</script>
 </body>
 </html>
