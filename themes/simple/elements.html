@@ -51,6 +51,15 @@
     </p>
 {%- endmacro %}
 
+<!-- Quotes -->
+{% macro quote(contents) -%}
+<blockquote>
+{% for each in contents %}
+{{ span(each.annotations, each.color, each.content, each.link) }}
+{% endfor %}
+</blockquote>
+{%- endmacro %}
+
 <!-- Divider object -->
 {% macro divider() -%}
     <hr></hr>
@@ -128,3 +137,4 @@
 <p>{{each.text}}</p>
 {% endfor %}
 {%- endmacro %}
+

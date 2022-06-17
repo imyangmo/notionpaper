@@ -47,6 +47,8 @@
 {{ eles.h3(each.text) }}
     {% elif each.type == 'paragraph' %}
 {{ eles.p(each.text) }}
+    {% elif each.type == 'quote' %}
+{{ eles.quote(each.text) }}
     {% elif each.type == 'image' %}
 {{ eles.img(each.url) }}
     {% elif each.type == 'table' %}

@@ -165,6 +165,10 @@ def pageParser(pageId, results):
                         text = text + span['plain_text']
                     tocItem = {'level': levels[item['type']], 'text': text}
                     block['contents'].append(tocItem)
+        elif each['type'] == 'quote':
+            block['text'] = []
+            for eachTxt in each[each['type']]['rich_text']:
+                block['text'].append(np_block_parser.richTextParser(eachTxt))
 
         full.append(block)
     

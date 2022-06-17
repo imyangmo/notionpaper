@@ -7,13 +7,13 @@ My initial thoughts are simple: I want a blogging platform that is simple and go
 I've used many blogging platforms such as Hexo, Wordpress and etc., you can find my comparison among those platforms and why NotionPaper is a better choice on my blog.
 
 ```
-ATTENTION: 
+Note: 
 I am not a professional developer, this project was written as a hobby.
 You are more than welcome to make this project better.
 ```
 
 ## How to use
-Complete guide on [here](https://prelude.cc/c76ecb0140fb4b529bab6b5bdadd60d7/c76ecb0140fb4b529bab6b5bdadd60d7.html) .
+Complete guide on [here](https://docs.notionpaper.cc/c76ecb0140fb4b529bab6b5bdadd60d7/c76ecb0140fb4b529bab6b5bdadd60d7.html) .
 
 Short version:
 1. Clone this repo
@@ -29,7 +29,7 @@ Short version:
     - [x] Page cover
     - [x] Page Icon
     - [ ] Page Tags
-- [ ] Supports parsing all types of blocks that Notion has;
+- [ ] Supports parsing all types of blocks that Notion has:
     - [x] Table of Contents
     - [x] Rich Texts (all anotations and text colors)
     - [x] Divider
@@ -41,7 +41,7 @@ Short version:
     - [x] Code
     - [x] Bulleted and numbered lists
     - [ ] Callout
-    - [ ] Quote
+    - [x] Quote
     - [ ] Child pages
     - [ ] Embed
     - [ ] File
@@ -50,6 +50,23 @@ Short version:
     - [ ] Equation
     - [ ] Breadcrumb
     - [ ] Columns
+    - [ ] Nested blocks
 - [x] Custom styles
 - [ ] Custom pages
 - [ ] Search
+
+## Update Notes
+**2022.06.17**
+1. ADD: quote block support
+
+**2022.06.14**
+1. REMOVE: external objects will not be downloaded due to privacy reasons
+2. OPTIMIZATION: multi threads support to make generating process faster
+3. OPTIMIZATION: extracted core functions into np_core to make code cleaner
+4. ADD: Publish property support that allows user decide which articles to generate
+
+**2022.05.02**
+1. ADD: table support
+
+**2022.03.26**
+Technically first usable version release
