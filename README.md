@@ -44,6 +44,9 @@ Short version:
     - [x] Quote
     - [ ] Child pages
     - [ ] Embed
+    - [ ] Mention
+        - [x] Page
+        - [ ] Person
     - [ ] File
     - [ ] PDF
     - [ ] Bookmark
@@ -56,6 +59,9 @@ Short version:
 - [ ] Search
 
 ## Update Notes
+**2022.06.20**
+1. ADD: page mention (inline page mention) support, which users could mention another post in a post
+
 **2022.06.17**
 1. ADD: quote block support
 
@@ -69,4 +75,4 @@ Short version:
 1. ADD: table support
 
 **2022.03.26**
-Technically first usable version release
+1. Technically first usable version release

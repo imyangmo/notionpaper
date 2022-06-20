@@ -15,6 +15,10 @@
 {% endif %}
 {%- endmacro %}
 
+{% macro span_mention(content, page_id) -%}
+<a href={{'/' + page_id + '/' + page_id + '.html' }} >{{content}}</a>
+{%- endmacro %}
+
 
 
 <!-- Heading objects -->
@@ -46,7 +50,11 @@
 {% macro p(contents) -%}
     <p>
         {% for each in contents %}
+        {% if each['type'] == 'text' %}
             {{ span(each.annotations, each.color, each.content, each.link) }}
+        {% elif each['type'] == 'mention_page' %}
+            {{ span_mention(each.content, each.page_id) }}
+        {% endif %}
         {% endfor %}
     </p>
 {%- endmacro %}
