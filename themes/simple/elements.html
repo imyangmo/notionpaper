@@ -70,7 +70,7 @@
 
 <!-- Divider object -->
 {% macro divider() -%}
-    <hr></hr>
+<hr></hr>
 {%- endmacro %}
 
 <!-- Code -->
@@ -82,6 +82,28 @@
 {% macro img(url) -%}
     <img src={{'./' + url}}></img>
 {%- endmacro %}
+
+<!-- Image External -->
+{% macro img_ext(url) -%}
+    <img src={{ url }}></img>
+{%- endmacro %}
+
+<!-- Video Uploaded -->
+{% macro video(url) -%}
+<video controls><source src={{'./' + url}} >Sorry, your browser doesn't support embedded videos.</video>
+{%- endmacro %}
+
+<!-- Video External -->
+{% macro video_ext(url) -%}
+<video controls><source src={{ url }} >Sorry, your browser doesn't support embedded videos.</video>
+{%- endmacro %}
+
+<!-- Video Youtube -->
+{% macro video_ytb(vid) -%}
+<iframe width="1280" height="720" src={{'https://www.youtube.com/embed/' + vid}} frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{%- endmacro %}
+
+
 
 <!-- Table cell -->
 {% macro td(cell) -%}
@@ -145,4 +167,6 @@
 <p>{{each.text}}</p>
 {% endfor %}
 {%- endmacro %}
+
+
 

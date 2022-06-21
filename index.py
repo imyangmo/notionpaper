@@ -4,6 +4,7 @@ import requests, json, yaml, uuid
 import os, shutil, time, threading
 import socket, socks
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from urllib.parse import urlparse, parse_qs
 
 # BEGIN global variables
 global_indexTitle = ""
@@ -90,7 +91,6 @@ def pageParser(pageId, results):
     full = []
 
     textBlocks = ['heading_1','heading_2','heading_3','paragraph']
-    mediaBlocks = ['image','video']
     listBlocks = ['numbered_list_item','bulleted_list_item']
 
     # jsonfied = json.loads(results)
@@ -103,7 +103,7 @@ def pageParser(pageId, results):
             block['text'] = []
             for eachTxt in each[each['type']]['rich_text']:
                 block['text'].append(np_block_parser.richTextParser(eachTxt))
-        elif each['type'] in mediaBlocks:
+        elif each['type'] == 'image':
             if each[each['type']]['type'] == 'file':
                 fileName = str(uuid.uuid1())
                 # print("Retriving image from {}".format(each[each['type']]['file']['url']))
@@ -117,6 +117,24 @@ def pageParser(pageId, results):
                 # urllib.request.urlretrieve(each[each['type']]['external']['url'],'./_prebuild/' + pageId + '/' + fileName )
                 # fileSaver(each[each['type']]['external']['url'], './_prebuild/' + pageId + '/' + fileName)
                 block['url'] = each[each['type']]['external']['url']
+        elif each['type'] == 'video':
+            if each[each['type']]['type'] == 'file':
+                fileName = str(uuid.uuid1())
+                np_utils.fileSaver(each[each['type']]['file']['url'], './_prebuild/' + pageId + '/' + fileName)
+                block['url'] = fileName
+            elif each[each['type']]['type'] == 'external':
+                result = urlparse(each[each['type']]['external']['url'])
+                domain = result.netloc.split('.')
+                if 'youtube' in domain or 'youtu' in domain:
+                    block['type'] = 'video_youtube'
+                    try:
+                        vid = parse_qs(result.query, keep_blank_values=True)['v'][0]
+                        block['vid'] = vid
+                    except:
+                        print('No Youtube video ID found')
+                else:
+                    block['type'] = "video_external"
+                    block['url'] = each[each['type']]['external']['url']
         elif each['type'] == 'table':
             block['rows'] = []
             # tableContentRaw = pageBlockGetter(each['id'])

@@ -46,7 +46,7 @@
 
 
 <!-- body area -->
-    <div class="container" style="padding-top: 400px">
+    <div class="container" style="padding-top: 450px">
     <div>
         
         
@@ -64,6 +64,14 @@
 {{ eles.quote(each.text) }}
     {% elif each.type == 'image' %}
 {{ eles.img(each.url) }}
+    {% elif each.type == 'image_external' %}
+{{ eles.img_ext(each.url) }}
+    {% elif each.type == 'video' %}
+{{ eles.video(each.url) }}
+    {% elif each.type == 'video_external' %}
+{{ eles.video_ext(each.url) }}
+    {% elif each.type == 'video_youtube' %}
+{{ eles.video_ytb(each.vid) }}
     {% elif each.type == 'table' %}
 {{ eles.table(each.rows) }}
     {% elif each.type == 'bulleted_list_item' %}
@@ -72,6 +80,8 @@
 {{ eles.ol(each.listItems) }}
     {% elif each.type == 'code' %}
 {{ eles.code(each.language, each.contents) }}
+    {% elif each.type == 'divider' %}
+{{ eles.divider() }}
     {% endif %}
 {% endfor %}
     </div>

@@ -36,8 +36,11 @@ Short version:
     - [x] Paragraphs
     - [x] Headings
     - [x] Table
-    - [x] Images
-    - [ ] Videos
+    - [x] Images (Uploaded and external)
+    - [x] Videos
+        - [x] Uploaded Video
+        - [x] External Video
+        - [x] Youtube Video
     - [x] Code
     - [x] Bulleted and numbered lists
     - [ ] Callout
@@ -59,22 +62,29 @@ Short version:
 - [ ] Search
 
 ## Update Notes
+
+**2022.06.21**
+- ADD: video support
+- ADD: divider support
+- FIX: external image parsing issue
+- OPTIMIZATION: theme limited extra long image or video height
+
 **2022.06.20**
-1. ADD: page mention (inline page mention) support, which users could mention another post in a post
-2. ADD: post date and time display support
-3. OPTIMIZATION: theme display optimization for article page
+- ADD: page mention (inline page mention) support, which users could mention another post in a post
+- ADD: post date and time display support
+- OPTIMIZATION: theme display optimization for article page
 
 **2022.06.17**
-1. ADD: quote block support
+- ADD: quote block support
 
 **2022.06.14**
-1. REMOVE: external objects will not be downloaded due to privacy reasons
-2. OPTIMIZATION: multi threads support to make generating process faster
-3. OPTIMIZATION: extracted core functions into np_core to make code cleaner
-4. ADD: Publish property support that allows user decide which articles to generate
+- REMOVE: external objects will not be downloaded due to privacy reasons
+- OPTIMIZATION: multi threads support to make generating process faster
+- OPTIMIZATION: extracted core functions into np_core to make code cleaner
+- ADD: Publish property support that allows user decide which articles to generate
 
 **2022.05.02**
-1. ADD: table support
+- ADD: table support
 
 **2022.03.26**
-1. Technically first usable version release
+- Technically first usable version release
