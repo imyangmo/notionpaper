@@ -236,6 +236,17 @@ def pageGenerator(eachId):
         # np_utils.fileSaver(titleRst['cover']['external']['url'], './_prebuild/' + eachId + '/' + fileName)
         pageObject['cover'] = {'type': 'external', 'url': titleRst['cover']['external']['url']}
 
+    if 'Original Create Time' in titleRst['properties'] and titleRst['properties']['Original Create Time']['date'] != None:
+        pageObject['create_date'] = np_utils.dateFormatter(titleRst['properties']['Original Create Time']['date']['start'])['date']
+        pageObject['create_time'] = np_utils.dateFormatter(titleRst['properties']['Original Create Time']['date']['start'])['time']
+    else:
+        print('Original Create Time not found, or Original Create Time is empty, switch to Create Time')
+        if 'Create Time' in titleRst['properties']:
+            pageObject['create_date'] = np_utils.dateFormatter(titleRst['properties']['Create Time']['created_time'])['date']
+            pageObject['create_time'] = np_utils.dateFormatter(titleRst['properties']['Create Time']['created_time'])['time']
+        else:
+            return({'code':'error', 'msg':'No Create Time or Original Create Time found'})
+
 
     pageObject['site_name'] = global_indexTitle
     pageObject['contents'] = pageContent

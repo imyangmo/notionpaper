@@ -61,6 +61,8 @@ Short version:
 ## Update Notes
 **2022.06.20**
 1. ADD: page mention (inline page mention) support, which users could mention another post in a post
+2. ADD: post date and time display support
+3. OPTIMIZATION: theme display optimization for article page
 
 **2022.06.17**
 1. ADD: quote block support
