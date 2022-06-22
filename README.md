@@ -63,6 +63,9 @@ Short version:
 
 ## Update Notes
 
+**2022.06.23**
+- ADD: table of contents support
+
 **2022.06.21**
 - ADD: video support
 - ADD: divider support

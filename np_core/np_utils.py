@@ -1,4 +1,9 @@
-import requests, re, os, shutil, asyncio
+import requests, re, os, shutil, hashlib
+
+def genMD5(str):
+    md5 = hashlib.md5()
+    md5.update(str.encode('utf-8'))
+    return(md5.hexdigest())
 
 def fileSaver(url, path):
     header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36"}

@@ -8,6 +8,27 @@ hr {
   max-width: 100%;
 }
 
+.toc_level_1 {
+  display: block;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.toc_level_2 {
+  display: block;
+  padding-left: 20px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.toc_level_3 {
+  display: block;
+  padding-left: 40px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+
 .page-title {
   background-color: var(--bg);
   padding: 1rem 1rem 1rem 1rem;

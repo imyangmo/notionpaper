@@ -22,24 +22,24 @@
 
 
 <!-- Heading objects -->
-{% macro h1(contents) -%}
-    <h2>
+{% macro h1(id, contents) -%}
+    <h2 id={{id}}>
         {% for each in contents %}
             {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
     </h2>
 {%- endmacro %}
 
-{% macro h2(contents) -%}
-    <h3>
+{% macro h2(id, contents) -%}
+    <h3 id={{id}}>
         {% for each in contents %}
             {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
     </h3>
 {%- endmacro %}
 
-{% macro h3(contents) -%}
-    <h4>
+{% macro h3(id, contents) -%}
+    <h4 id={{id}}>
         {% for each in contents %}
             {{ span(each.annotations, each.color, each.content, each.link) }}
         {% endfor %}
@@ -162,9 +162,9 @@
 {%- endmacro %}
 
 <!-- Table of Contents -->
-{% macro toc(content) -%}
-{% for each in content %}
-<p>{{each.text}}</p>
+{% macro toc(contents) -%}
+{% for each in contents %}
+<a href={{'#' + each.id}} class={{'toc_level_' + each.level|string}}>{{each.text}}</a>
 {% endfor %}
 {%- endmacro %}
 

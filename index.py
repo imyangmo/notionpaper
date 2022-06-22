@@ -90,7 +90,7 @@ def tocGenerator():
 def pageParser(pageId, results):  
     full = []
 
-    textBlocks = ['heading_1','heading_2','heading_3','paragraph']
+    headingBlocks = ['heading_1','heading_2','heading_3','paragraph']
     listBlocks = ['numbered_list_item','bulleted_list_item']
 
     # jsonfied = json.loads(results)
@@ -99,10 +99,15 @@ def pageParser(pageId, results):
         block['type'] = each['type']
         
 
-        if each['type'] in textBlocks:
+        if each['type'] == 'paragraph':
             block['text'] = []
             for eachTxt in each[each['type']]['rich_text']:
                 block['text'].append(np_block_parser.richTextParser(eachTxt))
+        elif each['type'] in headingBlocks:
+            block['text'] = []
+            for eachTxt in each[each['type']]['rich_text']:
+                block['text'].append(np_block_parser.richTextParser(eachTxt))
+            block['id'] = each['id']
         elif each['type'] == 'image':
             if each[each['type']]['type'] == 'file':
                 fileName = str(uuid.uuid1())
@@ -181,7 +186,7 @@ def pageParser(pageId, results):
                     text = ""
                     for span in item[item['type']]['rich_text']:
                         text = text + span['plain_text']
-                    tocItem = {'level': levels[item['type']], 'text': text}
+                    tocItem = {'level': levels[item['type']], 'text': text, 'id': item['id']}
                     block['contents'].append(tocItem)
         elif each['type'] == 'quote':
             block['text'] = []
