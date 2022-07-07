@@ -63,6 +63,14 @@ Short version:
 
 ## Update Notes
 
+**2022.07.07**
+- **Core:**
+    - ADD: Nested bulleted list and content support. Finally.
+- **Theme:Simple**
+    - OPTIMIZATION: some style optimization
+
+This release is considered as mostly functional one, new features will be added gradually but main focus will be improvements.
+
 **2022.06.23**
 - ADD: table of contents support
 

@@ -1,3 +1,40 @@
+{% macro generator(item) %}
+{% if item.type == 'heading_1' %}
+{{ h1(item.id, item.text) }}
+    {% elif item.type == 'heading_2' %}
+{{ h2(item.id, item.text) }}
+    {% elif item.type == 'heading_3' %}
+{{ h3(item.id, item.text) }}
+    {% elif item.type == 'paragraph' %}
+{{ p(item.text) }}
+    {% elif item.type == 'quote' %}
+{{ quote(item.text) }}
+    {% elif item.type == 'image' %}
+{{ img(item.url) }}
+    {% elif item.type == 'image_external' %}
+{{ img_ext(item.url) }}
+    {% elif item.type == 'video' %}
+{{ video(item.url) }}
+    {% elif item.type == 'video_external' %}
+{{ video_ext(item.url) }}
+    {% elif item.type == 'video_youtube' %}
+{{ video_ytb(item.vid) }}
+    {% elif item.type == 'table' %}
+{{ table(item.rows) }}
+    {% elif item.type == 'bulleted_list_item_group' %}
+{{ ul(item['items']) }}
+    {% elif item.type == 'numbered_list_item_group' %}
+{{ ol(item['items']) }}
+    {% elif item.type == 'code' %}
+{{ code(item.language, item.contents) }}
+    {% elif item.type == 'divider' %}
+{{ divider() }}
+    {% elif item.type == 'table_of_contents' %}
+{{ toc(item.contents) }}
+    {% endif %}
+{% endmacro %}
+
+
 {% macro indexli(date, title, addr) -%}
     <li>
         <span>{{date}}</span>
@@ -136,26 +173,34 @@
 <!-- Bulleted and numbered list item -->
 {% macro li(item) -%}
     <li>
-        {% for each in item %}
-            {{ span(each.annotations, each.color, each.content, each.link) }}
+        {% for each in item.listItems %}
+            {% for every in each %}
+                {{ span(every.annotations, every.color, every.content, every.link) }}
+            {% endfor %}
         {% endfor %}
     </li>
+    {% if item.children != None %}
+        {% for any in item.children %}
+
+            {{ generator(any) }}
+
+        {% endfor %}
+    {% endif %}
 {%- endmacro %}
 
-
 <!-- Numbered list -->
-{% macro ol(listItems) -%}
+{% macro ol(items) -%}
     <ol>
-        {% for each in listItems %}
+        {% for each in items %}
             {{ li(each) }}
         {% endfor %}
     </ol>
 {%- endmacro %}
 
 <!-- Bulleted list -->
-{% macro ul(listItems) -%}
+{% macro ul(items) -%}
     <ul>
-        {% for each in listItems %}
+        {% for each in items %}
             {{ li(each) }}
         {% endfor %}
     </ul>
