@@ -1,0 +1,7 @@
+---
+const { title, date, time, id } = Astro.props;
+---
+<div class="row lh-lg fs-5">
+    <div class="col-3 fst-italic">{ date } { time }</div>
+    <div class="col-9"><a href={ "./post/" + id }>{ title }</a></div>
+</div>

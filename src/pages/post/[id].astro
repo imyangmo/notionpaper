@@ -1,0 +1,91 @@
+---
+import { DATABASE_ID, NOTION_TOKEN, NOTION_VERSION, NOTION_API_BASE_URL } from "../../config"
+import Framework from '../../layouts/Framework.astro'
+import Block from '../../components/Block.astro'
+
+import { indexParser, pageParser } from "../../components/Parsers.js"
+
+const { id } = Astro.params;
+
+
+
+
+export async function getStaticPaths(){
+    const query = {
+        "filter": {
+            "and": [
+                {
+                    "property": "Name",
+                    "rich_text": {
+                        "is_not_empty": true
+                    }
+                },
+                {
+                    "property": "Publish",
+                    "checkbox": {
+                        "equals": true
+                    }
+                }
+            ]
+        }
+    };
+
+    const response = await fetch(NOTION_API_BASE_URL + 'databases/' + DATABASE_ID + '/query', {
+        method: 'POST',
+        headers: {
+            'Authorization':'Bearer ' + NOTION_TOKEN,
+            'Notion-Version': NOTION_VERSION,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(query)
+    });
+    const data = await response.json();
+    const parsedData = indexParser(data.results);
+
+    return parsedData.map((post) => {
+        return {
+            params: {id: post.id}
+        }
+    })
+    
+}
+
+
+// fetches page meta info
+const pageInfoResp = await fetch(NOTION_API_BASE_URL + 'pages/' + id, {
+    method: 'GET',
+    headers: {
+        'Authorization':'Bearer ' + NOTION_TOKEN,
+        'Notion-Version': NOTION_VERSION,
+        'Content-Type': 'application/json'
+    }
+});
+const pageInfoData = await pageInfoResp.json();
+
+// fetches page content data
+const pageContentResp = await fetch(NOTION_API_BASE_URL + 'blocks/' + id + '/children', {
+    method: 'GET',
+    headers: {
+        'Authorization':'Bearer ' + NOTION_TOKEN,
+        'Notion-Version': NOTION_VERSION,
+        'Content-Type': 'application/json'
+    }
+});
+const pageContentData = await pageContentResp.json();
+// console.log(pageContentData)
+
+const pageParsedDate = pageParser(pageContentData);
+// console.log(pageParsedDate)
+---
+<Framework>
+    <h1>{ pageInfoData.properties.Name.title[0].plain_text }</h1>
+    {
+        // pageParsedDate.map((block) =>(
+        //     <h1>{block.type}</h1>
+        // ))
+        pageParsedDate.map((block) =>(
+            <Block block={block}></Block>
+        ))
+    }
+    
+</Framework>

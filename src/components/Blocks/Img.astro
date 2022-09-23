@@ -1,0 +1,6 @@
+---
+import { Image } from '@astrojs/image/components';
+
+const { block } = Astro.props;
+---
+<Image src={block.url} alt="test" width={32} height={32} format="webp"></Image>

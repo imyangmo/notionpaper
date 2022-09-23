@@ -1,0 +1,18 @@
+---
+const { content } = Astro.props;
+console.log(content)
+---
+{
+    content.map((each) => (
+        each.link == null
+        ?
+        <>
+            <span class={each.annotations + ' ' + each.color }>{ each.content }</span>
+        </>
+        :
+        <>
+            <a href={each.link} class={each.annotations + ' ' + each.color }>{ each.content }</a>
+        </>
+    )
+)
+}
