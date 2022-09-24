@@ -1,0 +1,19 @@
+---
+import RichText from "./RichText.astro";
+
+const { block } = Astro.props;
+
+---
+<table class="table">
+    {
+        block.rows.map((eachRow) => (
+            <tr>
+                {
+                    eachRow.map((eachCell) => (
+                        <td><RichText content= { eachCell }></RichText></td>
+                    ))
+                }
+            </tr>
+        ))
+    }
+</table>

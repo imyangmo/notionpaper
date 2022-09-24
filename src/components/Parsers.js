@@ -1,4 +1,5 @@
 import { dateFormatter, youtubeParser } from "./Utils.js"
+import { pageBlockFetcher } from "./Fetchers.js";
 
 export const indexParser = (data) => {
     let content = [];
@@ -87,12 +88,15 @@ const richTextParser = (data) => {
 
 };
 
-const blockParser = (data) => {
+async function blockParser(data){
     let block = {
         type: data.type,
         // id is for html link anchor purpose
         id: '', 
-        content: [],
+        text: [],
+        code:'',
+        rows:[],
+        language: '',
         url: ''
     };
 
@@ -106,6 +110,16 @@ const blockParser = (data) => {
             block.id = data.id;
             block.text = data[data.type].rich_text.map((item) => richTextParser(item));
             break;
+        case 'divider':
+            break;
+        case 'quote':
+            block.text = data[data.type].rich_text.map((item) => richTextParser(item));
+            break;
+        case 'code':
+            const codeArr = data[data.type].rich_text.map((item) => item.plain_text);
+            block.code = codeArr.join('');
+            block.language = data[data.type].language;
+            break;
         case 'image':
             switch(data[data.type].type){
                 case 'file':
@@ -116,6 +130,20 @@ const blockParser = (data) => {
                     block.url = data[data.type].external.url;
                     break;
             }
+            break;
+        case 'table':
+            const tableContent = await pageBlockFetcher(data.id);
+            tableContent.results.map((eachRow) => {
+              let rowArr = [];
+              eachRow.table_row.cells.map((eachCell) => {
+                let textArr = [];
+                eachCell.map((item) => {
+                  textArr.push(richTextParser(item));
+                });
+                rowArr.push(textArr);
+              });
+              block.rows.push(rowArr);
+            });
             break;
         case 'video':
             switch(data[data.type].type){
@@ -133,6 +161,7 @@ const blockParser = (data) => {
                     };
                     break;
             };
+            break;
     };
 
     return block;
@@ -156,28 +185,13 @@ const blockParser = (data) => {
 //                 else:
 //                     block['type'] = "video_external"
 //                     block['url'] = content[content['type']]['external']['url']
-//         case 'table':
-//             table_contents = np_fetcher.page_block_fetcher(GLOBAL_CONFIGS['notion_api_base_url'], content['id'], headers)
-//             block['rows'] = [[ [ richtext_parser(item) for item in each_cell ] for each_cell in each_row['table_row']['cells']] for each_row in table_contents['results']]
 
-//             # code above is equivalent to below, but faster:
-//             # block['rows'] = []
-//             # for each_row in table_contents['results']:
-//             #     row_arr = []
-//             #     for each_cell in each_row['table_row']['cells']:
-//             #         text_arr = []
-//             #         for item in each_cell:
-//             #             text_arr.append(richtext_parser(item))
-//             #         row_arr.append(text_arr)
-//             #     block['rows'].append(row_arr)
 
 //         case 'numbered_list_item' | 'bulleted_list_item':
 //             block['listItems'] = [  ]
 //             text_arr = [ richtext_parser(item) for item in content[content['type']]['rich_text'] ]
 //             block['listItems'].append(text_arr)
-//         case 'code':
-//             block['language'] = "language-" + content[content['type']]['language']
-//             block['contents'] = "".join([ item['plain_text'] for item in content[content['type']]['rich_text'] ])
+
 //         case 'table_of_contents':
 //             block['contents'] = []
 //             for item in results['results']:
@@ -192,19 +206,13 @@ const blockParser = (data) => {
 //                         text = text + span['plain_text']
 //                     toc_item = {'level': levels[item['type']], 'text': text, 'id': item['id']}
 //                     block['contents'].append(toc_item)
-//         case 'quote':
-//             block['text'] = [ richtext_parser(item) for item in content[content['type']]['rich_text']]
+
 
 //     return(block)
 
-export const pageParser = (data) => {
-    let full = [];
-    // console.log(data.results)
 
-    data.results.forEach((item) => {
-        full.push(blockParser(item));
-    });
-
-    return full;
-
+export async function pageParser(data){
+    //this shit costs me five straight hours!!! remember it!!! fucking async shit
+    const promList = data.results.map((item) => blockParser(item))
+    return Promise.all(promList);
 }

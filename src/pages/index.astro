@@ -1,40 +1,11 @@
 ---
-import { DATABASE_ID, NOTION_TOKEN, NOTION_VERSION, NOTION_API_BASE_URL } from "../config"
 import Framework from "../layouts/Framework.astro";
 import { indexParser } from "../components/Parsers.js"
+import { indexFetcher } from '../components/Fetchers.js'
 import TOC from "../components/TOC.astro"
 
-const query = {
-        "filter": {
-            "and": [
-                {
-                    "property": "Name",
-                    "rich_text": {
-                        "is_not_empty": true
-                    }
-                },
-                {
-                    "property": "Publish",
-                    "checkbox": {
-                        "equals": true
-                    }
-                }
-            ]
-        }
-    };
-const response = await fetch(NOTION_API_BASE_URL + 'databases/' + DATABASE_ID + '/query', {
-    method: 'POST',
-    headers: {
-        'Authorization':'Bearer ' + NOTION_TOKEN,
-        'Notion-Version': NOTION_VERSION,
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(query)
-});
-const data = await response.json();
+const data = await indexFetcher();
 const parsedData = indexParser(data.results);
-
-// console.log(parsedData);
 ---
 
 <Framework>

@@ -2,7 +2,9 @@
 NotionPaper is tool that helps you generate static sites from Notion, so that you can use Notion like a CMS.
 
 ## Why NotionPaper
-My initial thoughts are simple: I want a blogging platform that is simple and good to use enough, so that I could focus on writing instead of setting up a bulky environment. Notion is the perfect tool for that, however you need to pay some money on the subscription in order to let search engines to crawl your site. And I don't wanna spend money on that.
+My initial thoughts are simple: I want a blogging platform that is simple and good to use enough, so that I could focus on writing instead of setting up a bulky environment. 
+
+Notion is the perfect tool for that, however you need to pay some money on the subscription in order to let search engines to crawl your site. And I don't wanna spend money on that.
 
 I've used many blogging platforms such as Hexo, Wordpress and etc., you can find my comparison among those platforms and why NotionPaper is a better choice on my blog.
 
@@ -23,19 +25,19 @@ tbd
 - [ ] Supports parsing all types of blocks that Notion has:
     - [ ] Table of Contents
     - [x] Rich Texts (all anotations and text colors)
-    - [ ] Divider
+    - [x] Divider
     - [x] Paragraphs
     - [x] Headings
-    - [ ] Table
+    - [x] Table
     - [ ] Images (Uploaded and external)
     - [ ] Videos
         - [ ] Uploaded Video
         - [ ] External Video
         - [ ] Youtube Video
-    - [ ] Code
+    - [x] Code
     - [ ] Bulleted and numbered lists
     - [ ] Callout
-    - [ ] Quote
+    - [x] Quote
     - [ ] Child pages
     - [ ] Embed
     - [ ] Mention
@@ -53,11 +55,20 @@ tbd
 - [ ] Search
 
 ## Update Notes
+
+**2022.09.25**
+- ADD: divider, table support
+- CHORE: some code splitting
+
+---
+
 **2022.09.23**
-> IMPORTANT: major change
-> From this release, the code of the this project has been refactored from Python into using [Astro](https://astro.build/) for multiple reasons, I may want to make a post regarding this refactoring soon.
-> All features are gradually done.
-> Archived code can be found on 'python_ver' branch.
+```
+IMPORTANT: major change
+From this release, the code of the this project has been refactored from Python into using [Astro](https://astro.build/) for multiple reasons, I may want to make a post regarding this refactoring soon.
+All features are gradually done.
+Archived code can be found on 'python_ver' branch.
+```
 
 ---
 

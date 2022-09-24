@@ -1,46 +1,15 @@
 ---
-import { DATABASE_ID, NOTION_TOKEN, NOTION_VERSION, NOTION_API_BASE_URL } from "../../config"
 import Framework from '../../layouts/Framework.astro'
 import Block from '../../components/Block.astro'
 
+import { indexFetcher, pageBlockFetcher, pageInfoFetcher } from '../../components/Fetchers.js'
 import { indexParser, pageParser } from "../../components/Parsers.js"
 
 const { id } = Astro.params;
 
-
-
-
 export async function getStaticPaths(){
-    const query = {
-        "filter": {
-            "and": [
-                {
-                    "property": "Name",
-                    "rich_text": {
-                        "is_not_empty": true
-                    }
-                },
-                {
-                    "property": "Publish",
-                    "checkbox": {
-                        "equals": true
-                    }
-                }
-            ]
-        }
-    };
-
-    const response = await fetch(NOTION_API_BASE_URL + 'databases/' + DATABASE_ID + '/query', {
-        method: 'POST',
-        headers: {
-            'Authorization':'Bearer ' + NOTION_TOKEN,
-            'Notion-Version': NOTION_VERSION,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(query)
-    });
-    const data = await response.json();
-    const parsedData = indexParser(data.results);
+    const indexData = await indexFetcher();
+    const parsedData = indexParser(indexData.results);
 
     return parsedData.map((post) => {
         return {
@@ -50,42 +19,18 @@ export async function getStaticPaths(){
     
 }
 
+const pageInfoData = await pageInfoFetcher(id);
 
-// fetches page meta info
-const pageInfoResp = await fetch(NOTION_API_BASE_URL + 'pages/' + id, {
-    method: 'GET',
-    headers: {
-        'Authorization':'Bearer ' + NOTION_TOKEN,
-        'Notion-Version': NOTION_VERSION,
-        'Content-Type': 'application/json'
-    }
-});
-const pageInfoData = await pageInfoResp.json();
+const pageContentData = await pageBlockFetcher(id);
 
-// fetches page content data
-const pageContentResp = await fetch(NOTION_API_BASE_URL + 'blocks/' + id + '/children', {
-    method: 'GET',
-    headers: {
-        'Authorization':'Bearer ' + NOTION_TOKEN,
-        'Notion-Version': NOTION_VERSION,
-        'Content-Type': 'application/json'
-    }
-});
-const pageContentData = await pageContentResp.json();
-// console.log(pageContentData)
+const pageParsedData = await pageParser(pageContentData);
 
-const pageParsedDate = pageParser(pageContentData);
-// console.log(pageParsedDate)
 ---
 <Framework>
     <h1>{ pageInfoData.properties.Name.title[0].plain_text }</h1>
     {
-        // pageParsedDate.map((block) =>(
-        //     <h1>{block.type}</h1>
-        // ))
-        pageParsedDate.map((block) =>(
+        pageParsedData.map((block) =>(
             <Block block={block}></Block>
         ))
     }
-    
 </Framework>

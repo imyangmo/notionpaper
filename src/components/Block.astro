@@ -3,22 +3,20 @@ import H1 from '../components/Blocks/H1.astro'
 import H2 from '../components/Blocks/H2.astro'
 import H3 from '../components/Blocks/H3.astro'
 import P from '../components/Blocks/P.astro'
+import Hr from '../components/Blocks/Hr.astro'
+import Callout from '../components/Blocks/Callout.astro'
+import Codes from '../components/Blocks/Codes.astro'
+import Table from '../components/Blocks/Table.astro'
+
+
 import Img from '../components/Blocks/Img.astro'
 
 
+
+
 const { block } = Astro.props;
-// console.log(block)
-// const tagMapping = {
-//     'heading_1': 'H1',
-//     'heading_2': 'h2',
-//     'image': 'img',
-//     'image_external': 'img'
-// }
 
-// const TagName = tagMapping[block.type]
-// console.log(TagName)
-
-const demo = (block) => {
+const switcher = (block) => {
     switch(block.type){
     case 'heading_1':
         return H1;
@@ -32,38 +30,27 @@ const demo = (block) => {
     case 'paragraph':
         return P;
         break;
+    case 'divider':
+        return Hr;
+        break;
+    case 'quote':
+        return Callout;
+        break;
+    case 'code':
+        return Codes;
+        break;
+    case 'table':
+        return Table;
+        break;
     case 'image':
     case 'image_external':
         return Img;
         break;
 }
 }
-const ThisComp = demo(block)
-
-// switch(block.type){
-//     case 'heading_1':
-//         return H1;
-//         break;
-// }
-
-
-
-// console.log("demo block value is:")
-// console.log(demo(block))
-// console.log("demo block type is:")
-// console.log(typeof demo(block))
-
-// const ThisComp = H1;
-// console.log(H1);
-// console.log(typeof H1)
-// console.log(ThisComp)
-// console.log(typeof ThisComp)
-
-
-
+const ThisComp = switcher(block)
 
 ---
 
 <ThisComp block= { block }></ThisComp>
-<!-- <ThisComp><RichText content={block.text}></RichText></ThisComp> -->
 

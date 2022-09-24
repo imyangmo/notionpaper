@@ -1,0 +1,8 @@
+---
+import { Code } from 'astro/components';
+
+
+const { block } = Astro.props;
+
+---
+<Code code={block.code} lang={block.language}></Code>

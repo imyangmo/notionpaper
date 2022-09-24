@@ -1,6 +1,6 @@
 ---
 const { content } = Astro.props;
-console.log(content)
+// console.log(content)
 ---
 {
     content.map((each) => (
@@ -11,7 +11,7 @@ console.log(content)
         </>
         :
         <>
-            <a href={each.link} class={each.annotations + ' ' + each.color }>{ each.content }</a>
+            <a href={each.link} class={each.annotations + ' ' + each.color } target="_blank">{ each.content }</a>
         </>
     )
 )
