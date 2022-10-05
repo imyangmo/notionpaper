@@ -1,19 +1,22 @@
 import { DATABASE_ID, NOTION_TOKEN, NOTION_VERSION, NOTION_API_BASE_URL } from "../config"
 
-export async function pageBlockFetcher(id){
-    const pageContentResp = await fetch(NOTION_API_BASE_URL + 'blocks/' + id + '/children', {
+export async function pageBlockFetcher(id, next_cursor=null){
+    let param = ""
+    if(next_cursor != null){
+        param = "start_cursor=" + next_cursor
+    }
+
+    const fetchURL = NOTION_API_BASE_URL + 'blocks/' + id + '/children?' + param;
+    const fetchOptions = {
         method: 'GET',
         headers: {
             'Authorization':'Bearer ' + NOTION_TOKEN,
             'Notion-Version': NOTION_VERSION,
             'Content-Type': 'application/json'
         }
-    });
+    }
+    const pageContentResp = await fetch(fetchURL, fetchOptions);
     const pageContentData = await pageContentResp.json();
-    // console.log(pageContentData)
-    
-    // const pageParsedDate = pageParser(pageContentData);
-    // console.log(pageParsedDate)
     return pageContentData;
 }
 
@@ -58,6 +61,19 @@ export async function indexFetcher(){
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(query)
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function siteInfoFetcher(){
+    const response = await fetch(NOTION_API_BASE_URL + 'databases/' + DATABASE_ID, {
+        method: 'GET',
+        headers: {
+            'Authorization':'Bearer ' + NOTION_TOKEN,
+            'Notion-Version': NOTION_VERSION,
+            'Content-Type': 'application/json'
+        }
     });
     const data = await response.json();
     return data;

@@ -135,8 +135,7 @@ iframe {
 .code {
     padding-left: 1rem;
     padding-right: 1rem;
-    background-color: var(--accent-bg);
-    color: var(--code);
+    color: var(--bs-code-color);
 }
 
 .tocTitle {
@@ -209,6 +208,80 @@ iframe {
     -webkit-overflow-scrolling: touch;
 }
 
-main>.container {
-    padding: 80px 15px 0;
+main {
+    padding: 56px 0 0;
+}
+
+/* Color of the text. Possible values are: "default", "gray", "brown", "orange", "yellow", "green", "blue", "purple", "pink", "red", "gray_background", "brown_background", "orange_background", "yellow_background", "green_background", "blue_background", "purple_background", "pink_background", "red_background". */
+
+.gray {
+    color: var(--bs-gray);
+}
+
+.brown {
+    color: '#964B00';
+}
+
+.orange {
+    color: var(--bs-orange);
+}
+
+.yellow {
+    color: var(--bs-yellow);
+}
+
+.green {
+    color: var(--bs-green);
+}
+
+.blue {
+    color: var(--bs-blue);
+}
+
+.pink {
+    color: var(--bs-pink);
+}
+
+.purple {
+    color: var(--bs-purple);
+}
+
+.red {
+    color: var(--bs-red);
+}
+
+.gray_backgroud {
+    background-color: var(--bs-gray);
+}
+
+.brown_background {
+    background-color: '#964B00';
+}
+
+.orange_background {
+    background-color: var(--bs-orange);
+}
+
+.yellow_background {
+    background-color: var(--bs-yellow);
+}
+
+.green_background {
+    background-color: var(--bs-green);
+}
+
+.blue_background {
+    background-color: var(--bs-blue);
+}
+
+.pink_background {
+    background-color: var(--bs-pink);
+}
+
+.purple_background {
+    background-color: var(--bs-purple);
+}
+
+.red_background {
+    background-color: var(--bs-red);
 }

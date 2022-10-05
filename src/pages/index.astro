@@ -2,16 +2,24 @@
 import Framework from "../layouts/Framework.astro";
 import { indexParser } from "../components/Parsers.js"
 import { indexFetcher } from '../components/Fetchers.js'
-import TOC from "../components/TOC.astro"
+import PostList from "../components/PostList.astro"
+
+import { setPostList } from '../components/SiteMeta.js'
 
 const data = await indexFetcher();
 const parsedData = indexParser(data.results);
+
+const postList = parsedData.map((item) => {
+    return item.id;
+});
+setPostList(postList)
+
 ---
 
 <Framework>
 <div class="container text-start">
 {
-    parsedData.map((item) => <TOC title={item.title} date={item.date} time={item.time} id={item.id}></TOC>)
+    parsedData.map((item) => <PostList title={item.title} date={item.date} time={item.time} id={item.id}></PostList>)
 }
 </div>
 </Framework>

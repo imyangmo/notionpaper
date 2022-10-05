@@ -27,3 +27,23 @@ export function youtubeParser(url){
     const match = url.match(regExp);
     return (match&&match[7].length==11)? match[7] : null;
 }
+
+export function iconMaker(data){
+    if(data.icon !== null){
+        switch(data.icon.type){
+            case 'emoji':
+                return 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>' + data.icon.emoji + '</text></svg>'
+                break;
+            case 'file':
+                return data.icon.file.url;
+                break;
+            case 'external':
+                return data.icon.external.url;
+                break;
+            default:
+                break;
+        }
+    }else{
+        return "./favicon.svg";
+    }
+}

@@ -1,6 +1,7 @@
 ---
-import { Image } from '@astrojs/image/components';
+// import { Image } from '@astrojs/image/components';
 
 const { block } = Astro.props;
+
 ---
-<Image src={block.url} alt="test" width={32} height={32} format="webp"></Image>
+<img src={block.url} class="rounded mx-auto d-block py-2"/>

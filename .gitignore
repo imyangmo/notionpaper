@@ -1,6 +1,7 @@
 # build output
 dist/
 _github/
+_build.js
 
 # dependencies
 node_modules/

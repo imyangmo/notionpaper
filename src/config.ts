@@ -1,8 +1,6 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_TITLE = 'My personal website.';
-
 export const DATABASE_ID = 'xxxxx';
 export const NOTION_TOKEN = 'secret_xxxxx';
 export const NOTION_VERSION = '2022-02-22';

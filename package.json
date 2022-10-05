@@ -19,7 +19,10 @@
   "dependencies": {
     "@astrojs/node": "^1.0.0",
     "fs-extra": "^10.1.0",
+    "nanostores": "^0.7.0",
+    "nodejs-file-downloader": "^4.10.2",
     "sass": "^1.54.7",
-    "sharp": "^0.31.0"
+    "sharp": "^0.31.0",
+    "uuid": "^9.0.0"
   }
 }

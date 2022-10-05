@@ -18,24 +18,28 @@ You are more than welcome to make this project better.
 tbd
 
 ## Supported Features (.. or soon to be features)
+- [x] Site
+    - [x] Site name
+    - [x] Site description
+    - [x] Site favicon
 - [ ] Page
-    - [ ] Page cover
-    - [ ] Page Icon
+    - [x] Page cover
+    - [x] Page Icon
     - [ ] Page Tags
 - [ ] Supports parsing all types of blocks that Notion has:
-    - [ ] Table of Contents
+    - [x] Table of Contents
     - [x] Rich Texts (all anotations and text colors)
     - [x] Divider
     - [x] Paragraphs
     - [x] Headings
     - [x] Table
-    - [ ] Images (Uploaded and external)
-    - [ ] Videos
-        - [ ] Uploaded Video
-        - [ ] External Video
-        - [ ] Youtube Video
+    - [x] Images (Uploaded and external)
+    - [x] Videos
+        - [x] Uploaded Video
+        - [x] External Video
+        - [x] Youtube Video
     - [x] Code
-    - [ ] Bulleted and numbered lists
+    - [x] Bulleted and numbered lists
     - [ ] Callout
     - [x] Quote
     - [ ] Child pages
@@ -49,76 +53,16 @@ tbd
     - [ ] Equation
     - [ ] Breadcrumb
     - [ ] Columns
-    - [ ] Nested blocks
+    - [x] Nested blocks
 - [x] Custom styles
 - [ ] Custom pages
 - [ ] Search
 
 ## Update Notes
 
-**2022.09.25**
-- ADD: divider, table support
-- CHORE: some code splitting
+**2022.10.05**
+ - ADD: nested blocks, font color support
+ - FIX: fixed some bugs
 
----
 
-**2022.09.23**
-```
-IMPORTANT: major change
-From this release, the code of the this project has been refactored from Python into using [Astro](https://astro.build/) for multiple reasons, I may want to make a post regarding this refactoring soon.
-All features are gradually done.
-Archived code can be found on 'python_ver' branch.
-```
-
----
-
-**2022.07.07**
-- **Core:**
-    - ADD: Nested bulleted list and content support. Finally.
-- **Theme:Simple**
-    - OPTIMIZATION: some style optimization
-
-This release is considered as mostly functional one, new features will be added gradually but main focus will be improvements.
-
----
-
-**2022.06.23**
-- ADD: table of contents support
-
----
-
-**2022.06.21**
-- ADD: video support
-- ADD: divider support
-- FIX: external image parsing issue
-- OPTIMIZATION: theme limited extra long image or video height
-
----
-
-**2022.06.20**
-- ADD: page mention (inline page mention) support, which users could mention another post in a post
-- ADD: post date and time display support
-- OPTIMIZATION: theme display optimization for article page
-
----
-
-**2022.06.17**
-- ADD: quote block support
-
----
-
-**2022.06.14**
-- REMOVE: external objects will not be downloaded due to privacy reasons
-- OPTIMIZATION: multi threads support to make generating process faster
-- OPTIMIZATION: extracted core functions into np_core to make code cleaner
-- ADD: Publish property support that allows user decide which articles to generate
-
----
-
-**2022.05.02**
-- ADD: table support
-
----
-
-**2022.03.26**
-- Technically first usable version release
+Notes histories see [here](./UpdateNotes.md).

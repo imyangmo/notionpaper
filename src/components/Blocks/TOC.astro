@@ -1,0 +1,15 @@
+---
+const { block } = Astro.props;
+// block.listItems.forEach((each) => console.log(each))
+---
+<div class="card mt-4">
+    <div class="card-body">
+        {
+            block.listItems.map((each) => (
+                <a href={'#' + each.id} class={'toc_level_' + each.level}>
+                    {each.text}
+                </a>
+            ))
+        }
+    </div>
+</div>   

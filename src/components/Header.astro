@@ -1,35 +1,10 @@
-<!-- ---
-import HeaderLink from './HeaderLink.astro';
-import { SITE_TITLE } from '../config';
 ---
-
-<header>
-	<h2>
-		{SITE_TITLE}
-	</h2>
-	<nav>
-		<HeaderLink href="/">Home</HeaderLink>
-		<HeaderLink href="/blog">Blog</HeaderLink>
-		<HeaderLink href="/about">About</HeaderLink>
-		<HeaderLink href="https://twitter.com/astrodotbuild" target="_blank">Twitter</HeaderLink>
-		<HeaderLink href="https://github.com/withastro/astro" target="_blank">GitHub</HeaderLink>
-	</nav>
-</header>
-<style>
-	header {
-		margin: 0em 0 2em;
-	}
-	h2 {
-		margin: 0.5em 0;
-	}
-</style> -->
----
-const { site_title } = Astro.props;
+const { siteTitle } = Astro.props;
 ---
 <header>
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary bg-gradient">
 		<div class="container">
-			<a class="navbar-brand" href="/">{ site_title }</a>
+			<a class="navbar-brand" href="/">{ siteTitle }</a>
 		</div>
 	</nav>
 </header>

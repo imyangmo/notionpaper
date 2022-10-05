@@ -145,8 +145,8 @@ async function blockParser(data) {
     });
     block.rows.push(rowArr);
   });
-  console.log("table block");
-  console.log(block);
+  // console.log("table block");
+  // console.log(block);
 
   return block;
 }

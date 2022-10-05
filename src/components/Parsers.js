@@ -1,5 +1,8 @@
 import { dateFormatter, youtubeParser } from "./Utils.js"
 import { pageBlockFetcher } from "./Fetchers.js";
+import { v4 as uuidv4 } from 'uuid';
+
+import Downloader from "nodejs-file-downloader";
 
 export const indexParser = (data) => {
     let content = [];
@@ -30,6 +33,18 @@ export const indexParser = (data) => {
     
         content.push(item);
     });
+
+    content.sort((a,b) => {
+        const date1 = Date.parse(a.date + ' ' + a.time);
+        const date2 = Date.parse(b.date + ' ' + b.time);
+        if(date1 - date2 > 0){
+            return -1;
+        }else if(date1 - date2 < 0){
+            return 1;
+        }else{
+            return 0;
+        }
+    })
 
     return content;
 };
@@ -97,10 +112,15 @@ async function blockParser(data){
         code:'',
         rows:[],
         language: '',
-        url: ''
+        url: '',
+        listItems: [],
+        children: false
     };
 
     switch(data.type){
+        // for table of contents block, it does parses it but not generating it here
+        // because if a page is larger than 100 blocks, the page content needs to be fetched multiple times
+        // if it was generated here, the TOC wouldn't be correct
         case 'paragraph':
             block.text = data[data.type].rich_text.map((item) => richTextParser(item));
             break;
@@ -120,10 +140,30 @@ async function blockParser(data){
             block.code = codeArr.join('');
             block.language = data[data.type].language;
             break;
+        case 'table':
+            const tableContent = await pageBlockFetcher(data.id);
+
+            block.rows = tableContent.results.map((eachRow) => {
+                const rowArr =eachRow.table_row.cells.map((eachCell) => {
+                    const textArr = eachCell.map((item) => {
+                        return richTextParser(item);
+                    });
+                    return textArr;
+                });
+                return rowArr;
+            });
+            break;
         case 'image':
             switch(data[data.type].type){
                 case 'file':
-                    block.url = data[data.type].file.url;
+                    const rdmName = uuidv4();
+                    const downloader = new Downloader({
+                        url: data[data.type].file.url,
+                        directory: "./dist/post/assets",
+                        fileName: rdmName
+                      });
+                      await downloader.download();
+                      block.url = "../assets/" + rdmName
                     break;
                 case 'external':
                     block.type = 'image_external';
@@ -131,28 +171,21 @@ async function blockParser(data){
                     break;
             }
             break;
-        case 'table':
-            const tableContent = await pageBlockFetcher(data.id);
-            tableContent.results.map((eachRow) => {
-              let rowArr = [];
-              eachRow.table_row.cells.map((eachCell) => {
-                let textArr = [];
-                eachCell.map((item) => {
-                  textArr.push(richTextParser(item));
-                });
-                rowArr.push(textArr);
-              });
-              block.rows.push(rowArr);
-            });
-            break;
         case 'video':
             switch(data[data.type].type){
                 case 'file':
-                    block.url = data[data.type].file.url;
+                    const rdmName = uuidv4();
+                    const downloader = new Downloader({
+                        url: data[data.type].file.url,
+                        directory: "./dist/post/assets",
+                        fileName: rdmName
+                      });
+                      await downloader.download();
+                      block.url = "../assets/" + rdmName
                     break;
                 case 'external':
-                    const explode = data[data.type].external.url.split;
-                    if('youtube' in explode || 'youtu' in explode){
+                    const explode = data[data.type].external.url.split(".");
+                    if( explode.includes('youtube') || explode.includes('youtu')){
                         block.type = 'video_youtube';
                         block.url = youtubeParser(data[data.type].external.url);
                     }else{
@@ -162,54 +195,21 @@ async function blockParser(data){
                     break;
             };
             break;
+        case 'numbered_list_item':
+        case 'bulleted_list_item':
+            block.listItems = data[data.type].rich_text.map((item) => richTextParser(item));
+            break;
     };
 
+    if(data.has_children && data.type != 'table' ){
+        const childrenContent = await pageBlockFetcher(data.id);
+        const childrenParsedList = childrenContent.results.map((item) => blockParser(item));
+        block.children = await Promise.all(childrenParsedList);
+    }
+
+    // console.log(block);
     return block;
 }
-
-//         case 'video':
-//             if content[content['type']]['type'] == 'file':
-//                 file_name = str(uuid.uuid1())
-//                 np_utils.file_saver(content[content['type']]['file']['url'], './_prebuild/' + page_id + '/' + file_name)
-//                 block['url'] = file_name
-//             elif content[content['type']]['type'] == 'external':
-//                 result = urlparse(content[content['type']]['external']['url'])
-//                 domain = result.netloc.split('.')
-//                 if 'youtube' in domain or 'youtu' in domain:
-//                     block['type'] = 'video_youtube'
-//                     try:
-//                         vid = parse_qs(result.query, keep_blank_values=True)['v'][0]
-//                         block['vid'] = vid
-//                     except:
-//                         logging.warning('No Youtube video ID found')
-//                 else:
-//                     block['type'] = "video_external"
-//                     block['url'] = content[content['type']]['external']['url']
-
-
-//         case 'numbered_list_item' | 'bulleted_list_item':
-//             block['listItems'] = [  ]
-//             text_arr = [ richtext_parser(item) for item in content[content['type']]['rich_text'] ]
-//             block['listItems'].append(text_arr)
-
-//         case 'table_of_contents':
-//             block['contents'] = []
-//             for item in results['results']:
-//                 levels = {
-//                     "heading_1":1,
-//                     "heading_2":2,
-//                     "heading_3":3
-//                 }
-//                 if item['type'] in ['heading_1','heading_2','heading_3']:
-//                     text = ""
-//                     for span in item[item['type']]['rich_text']:
-//                         text = text + span['plain_text']
-//                     toc_item = {'level': levels[item['type']], 'text': text, 'id': item['id']}
-//                     block['contents'].append(toc_item)
-
-
-//     return(block)
-
 
 export async function pageParser(data){
     //this shit costs me five straight hours!!! remember it!!! fucking async shit
