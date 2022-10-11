@@ -178,6 +178,15 @@ if(pageInfoData.properties['Original Create Time'].date == null){
 
 const pageTitleEle = pageTitle + " - " + getTitle.get();
 
+let pageTags;
+
+if(pageInfoData.properties.Tags === undefined){
+    console.log("Your database does not have a 'Tags' property, skip tag generation.")
+}else{
+    pageTags = pageInfoData.properties.Tags.multi_select;
+}
+
+
 ---
 <link rel="icon" type="image/svg+xml" href={ pageIcon } />
 <title>{ pageTitleEle }</title>
@@ -186,7 +195,15 @@ const pageTitleEle = pageTitle + " - " + getTitle.get();
     <div class="header-image" style={ "background-image: url(" + pageCover + ")" } >
         <div>
             <h1 class="page-title bg-body">{ pageTitle }</h1>
-            <i class="page-title bg-body">Create At: { createdDate + ' ' + createdTime } </i>
+            <i class="page-title bg-body d-block">Create At: { createdDate + ' ' + createdTime } </i>
+            {
+                pageTags.length == 0
+                ?
+                null
+                :
+                <i class="page-title bg-body d-block">Tags: { pageTags.map((tag) => (<span class={"badge mx-1 " + tag.color + "_tag"}>{tag.name}</span>)) } </i>
+            }
+            
         </div>
     </div>
 

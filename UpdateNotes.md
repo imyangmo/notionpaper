@@ -1,5 +1,10 @@
 # Update Notes
 
+**2022.10.05**
+ - ADD: nested blocks, font color support
+ - FIX: fixed some bugs
+
+---
 
 **2022.09.29**
 - ADD: numbered and bulleted list, page cover, and table of contents support

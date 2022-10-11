@@ -73,8 +73,8 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
     </tr>
     <tr>
         <td>Page Tags</td>
-        <td>✍️ Up next</td>
-        <td></td>
+        <td>✅</td>
+        <td>Supported tag display on page, but need to improve.</td>
     </tr>
 
 <tr>
@@ -135,8 +135,8 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
     </tr> 
     <tr>
         <td>Callout</td>
-        <td>✍️ Up next</td>
-        <td></td>
+        <td>✅</td>
+        <td>Supported, but texts only, needs to improve.</td>
     </tr> 
     <tr>
         <td>Child pages</td>
@@ -189,7 +189,7 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
         <td>Children blocks</td>
     </tr> 
 <tr>
-    <td rowspan="3">Expandability</td>
+    <td rowspan="4">Expandability</td>
     <td>Custom styles / Themes</td>
     <td>📅 Planned</td>
     <td>You could design and apply your own or others' theme</td>
@@ -204,15 +204,20 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
         <td>📅 Planned</td>
         <td></td>
     </tr>
+    <tr>
+        <td>i18n</td>
+        <td>📅 Planned</td>
+        <td></td>
+    </tr>
 </table>
 
 
 
 ## Update Notes
 
-**2022.10.05**
- - ADD: nested blocks, font color support
- - FIX: fixed some bugs
+**2022.10.11**
+ - ADD: callout and page tag display support
+ - CHORE: some cleanup
 
 
 Notes histories see [here](./UpdateNotes.md).

@@ -135,6 +135,9 @@ async function blockParser(data){
         case 'quote':
             block.text = data[data.type].rich_text.map((item) => richTextParser(item));
             break;
+        case 'callout':
+            block.text = data[data.type].rich_text.map((item) => richTextParser(item));
+            break;
         case 'code':
             const codeArr = data[data.type].rich_text.map((item) => item.plain_text);
             block.code = codeArr.join('');

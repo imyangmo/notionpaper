@@ -213,7 +213,7 @@ main {
 }
 
 /* Color of the text. Possible values are: "default", "gray", "brown", "orange", "yellow", "green", "blue", "purple", "pink", "red", "gray_background", "brown_background", "orange_background", "yellow_background", "green_background", "blue_background", "purple_background", "pink_background", "red_background". */
-
+/* Color of the option. Possible values include: default, gray, brown, orange, yellow, green, blue, purple, pink, red. */
 .gray {
     color: var(--bs-gray);
 }
@@ -250,12 +250,12 @@ main {
     color: var(--bs-red);
 }
 
-.gray_backgroud {
+.gray_background {
     background-color: var(--bs-gray);
 }
 
 .brown_background {
-    background-color: '#964B00';
+    background-color: #964B00;
 }
 
 .orange_background {
@@ -284,4 +284,50 @@ main {
 
 .red_background {
     background-color: var(--bs-red);
+}
+
+.default_background {
+    background-color: #e9ecef;
+}
+
+/* Tag styles */
+.gray_tag {
+    background-color: var(--bs-gray);
+}
+
+.brown_tag {
+    background-color: #964B00;
+}
+
+.orange_tag {
+    background-color: var(--bs-orange);
+}
+
+.yellow_tag {
+    background-color: var(--bs-yellow);
+}
+
+.green_tag {
+    background-color: var(--bs-green);
+}
+
+.blue_tag {
+    background-color: var(--bs-blue);
+}
+
+.pink_tag {
+    background-color: var(--bs-pink);
+}
+
+.purple_tag {
+    background-color: var(--bs-purple);
+}
+
+.red_tag {
+    background-color: var(--bs-red);
+}
+
+.default_tag {
+    background-color: #e9ecef;
+    color: var(--bs-dark);
 }

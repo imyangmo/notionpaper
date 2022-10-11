@@ -1,0 +1,9 @@
+---
+import RichText from "./RichText.astro";
+
+const { block } = Astro.props;
+
+---
+<div class="callout callout-default">
+    <RichText content= { block.text }></RichText>
+</div>
