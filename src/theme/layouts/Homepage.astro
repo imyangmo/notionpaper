@@ -1,0 +1,29 @@
+---
+import Skeleton from './Skeleton.astro';
+
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+
+const { siteMeta, postList } = Astro.props;
+
+const thisTitle = siteMeta.siteTitle + ' - ' + siteMeta.siteDesc;
+// const { siteTitle, siteDesc, siteIcon, postList } = Astro.props;
+---
+<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } siteIcon={ siteMeta.siteIcon }>
+    <Header siteTitle={ siteMeta.siteTitle} />
+<!-- <Skeleton siteTitle={ siteTitle } siteDesc={ siteDesc } siteIcon={ siteIcon }>
+    <Header siteTitle={ siteTitle} /> -->
+        <main class="flex-shrink-0">
+            <div class="container text-start">
+                {
+                    postList.map((item) => 
+                        <div class="row lh-lg fs-5">
+                            <div class="col-3 fst-italic">{ item.date } { item.time }</div>
+                            <div class="col-9"><a href={ "./post/" + item.id }>{ item.title }</a></div>
+                        </div> 
+                    )
+                }
+            </div>
+        </main>
+    <Footer />
+</Skeleton>

@@ -1,17 +1,14 @@
 ---
-import { getTitle } from '../../components/SiteMeta.js'
+import Post from '../../theme/layouts/Post.astro';
 
-import Framework from '../../layouts/Framework.astro'
-import Block from '../../components/Block.astro'
+import { getTitle, getDesc, getPostList } from '../../components/SiteMeta.js';
+import { pageBlockFetcher, pageInfoFetcher } from '../../components/Fetchers.js';
+import { pageParser } from "../../components/Parsers.js";
+import { dateFormatter, iconMaker } from '../../components/Utils.js';
 
-import { pageBlockFetcher, pageInfoFetcher } from '../../components/Fetchers.js'
-import { pageParser } from "../../components/Parsers.js"
-import { dateFormatter, iconMaker } from '../../components/Utils'
-
-import { getPostList } from '../../components/SiteMeta.js'
 
 import { v4 as uuidv4 } from 'uuid';
-import Downloader from "nodejs-file-downloader"
+import Downloader from "nodejs-file-downloader";
 
 const { id } = Astro.params;
 
@@ -22,13 +19,13 @@ export async function getStaticPaths(){
             params: {id: each}
         }
     })
-    
-}
+};
 
 console.log("Generating page for " + id );
-
+//fetch page meta data
 const pageInfoData = await pageInfoFetcher(id);
-let pageCover = ''
+//generate page cover
+let pageCover = '';
 if(pageInfoData.cover != null){
     switch(pageInfoData.cover.type){
         case 'external':
@@ -46,8 +43,31 @@ if(pageInfoData.cover != null){
             break;
     }
 }
-const pageIcon = iconMaker(pageInfoData)
+// const pageIcon = iconMaker(pageInfoData)
+// const pageTitle = pageInfoData.properties.Name.title[0].plain_text;
 
+//generate create date and time
+let createdDate = 'Unspecified';
+let createdTime = 'Unspecified';
+if(pageInfoData.properties['Original Create Time'].date == null){
+    ({ date: createdDate, time: createdTime } = dateFormatter(pageInfoData.created_time))
+}else{
+    ({ date: createdDate, time: createdTime } = dateFormatter(pageInfoData.properties['Original Create Time'].date.start))
+}
+
+//generate page tags
+let pageTags;
+if(pageInfoData.properties.Tags === undefined){
+    console.log("Your database does not have a 'Tags' property, skip tag generation.")
+}else{
+    pageTags = pageInfoData.properties.Tags.multi_select;
+}
+
+// const siteTitle = getTitle.get();
+// const siteDesc = getDesc.get();
+
+
+//fetch page contents
 let next_cursor = null;
 let fullPageContents = [];
 while(true){
@@ -61,7 +81,7 @@ while(true){
         break;
     }
 };
-
+//generate page contents
 function listMerger(pageContents){
     console.log("Merging list items...")
     let tmp = [];
@@ -128,15 +148,9 @@ function listMergerHandler(pageContents){
     return mergedContent;
 }
 
-
 fullPageContents = listMergerHandler(fullPageContents)
 
-// console.log("this is the full")
-// console.log(JSON.stringify(fullPageContents))
-// console.log("==================================")
-
-
-
+//generate table of contents for this page
 function tocGenerator(pageContents){
     console.log("Generating table of contents...")
     const headingTypes = ['heading_1', 'heading_2', 'heading_3'];
@@ -166,52 +180,22 @@ fullPageContents.forEach((item) => {
     }
 });
 
-const pageTitle = pageInfoData.properties.Name.title[0].plain_text;
-let createdDate = 'Unspecified';
-let createdTime = 'Unspecified';
 
-if(pageInfoData.properties['Original Create Time'].date == null){
-    ({ date: createdDate, time: createdTime } = dateFormatter(pageInfoData.created_time))
-}else{
-    ({ date: createdDate, time: createdTime } = dateFormatter(pageInfoData.properties['Original Create Time'].date.start))
+
+const siteMeta = {
+    siteTitle: getTitle.get(),
+    siteDesc: getDesc.get()
 }
 
-const pageTitleEle = pageTitle + " - " + getTitle.get();
-
-let pageTags;
-
-if(pageInfoData.properties.Tags === undefined){
-    console.log("Your database does not have a 'Tags' property, skip tag generation.")
-}else{
-    pageTags = pageInfoData.properties.Tags.multi_select;
+const pageMeta = {
+    pageIcon: iconMaker(pageInfoData),
+    pageCover: pageCover,
+    pageTitle: pageInfoData.properties.Name.title[0].plain_text,
+    createdDate: createdDate,
+    createdTime: createdTime,
+    pageTags: pageTags
 }
-
 
 ---
-<link rel="icon" type="image/svg+xml" href={ pageIcon } />
-<title>{ pageTitleEle }</title>
-
-<Framework tester="asdasda">
-    <div class="header-image" style={ "background-image: url(" + pageCover + ")" } >
-        <div>
-            <h1 class="page-title bg-body">{ pageTitle }</h1>
-            <i class="page-title bg-body d-block">Create At: { createdDate + ' ' + createdTime } </i>
-            {
-                pageTags.length == 0
-                ?
-                null
-                :
-                <i class="page-title bg-body d-block">Tags: { pageTags.map((tag) => (<span class={"badge mx-1 " + tag.color + "_tag"}>{tag.name}</span>)) } </i>
-            }
-            
-        </div>
-    </div>
-
-    <div class="container">
-        {
-            fullPageContents.map((block) =>(
-                <Block block={block}></Block>
-            ))
-        }
-    </div>
-</Framework>
+<Post siteMeta={ siteMeta } pageMeta={ pageMeta } fullPageContents={ fullPageContents } >
+</Post>

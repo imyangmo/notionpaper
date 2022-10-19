@@ -1,10 +1,14 @@
 ---
-import Framework from "../layouts/Framework.astro";
-import { indexParser } from "../components/Parsers.js"
-import { indexFetcher } from '../components/Fetchers.js'
-import PostList from "../components/PostList.astro"
+import Homepage from '../theme/layouts/Homepage.astro';
 
-import { setPostList } from '../components/SiteMeta.js'
+import { indexParser } from "../components/Parsers.js"
+import { indexFetcher, siteInfoFetcher } from '../components/Fetchers.js'
+import { getTitle, setTitle, getDesc, setDesc, setPostList } from '../components/SiteMeta.js'
+import { iconMaker } from "../components/Utils";
+
+const siteInfo = await siteInfoFetcher()
+setTitle(siteInfo.title[0].plain_text)
+setDesc(siteInfo.description[0].plain_text)
 
 const data = await indexFetcher();
 const parsedData = indexParser(data.results);
@@ -14,12 +18,12 @@ const postList = parsedData.map((item) => {
 });
 setPostList(postList)
 
+const siteMeta = {
+    siteTitle: getTitle.get(),
+    siteDesc: getDesc.get(),
+    siteIcon: iconMaker(siteInfo)
+}
 ---
 
-<Framework>
-<div class="container text-start">
-{
-    parsedData.map((item) => <PostList title={item.title} date={item.date} time={item.time} id={item.id}></PostList>)
-}
-</div>
-</Framework>
+<Homepage siteMeta={ siteMeta } postList={ parsedData }>
+</Homepage>

@@ -1,5 +1,11 @@
 # Update Notes
 
+**2022.10.11**
+ - ADD: callout and page tag display support
+ - CHORE: some cleanup
+
+---
+
 **2022.10.05**
  - ADD: nested blocks, font color support
  - FIX: fixed some bugs

@@ -191,7 +191,7 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
 <tr>
     <td rowspan="4">Expandability</td>
     <td>Custom styles / Themes</td>
-    <td>📅 Planned</td>
+    <td>✅</td>
     <td>You could design and apply your own or others' theme</td>
 </tr>
     <tr>
@@ -215,9 +215,8 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
 
 ## Update Notes
 
-**2022.10.11**
- - ADD: callout and page tag display support
- - CHORE: some cleanup
-
+**2022.10.19**
+ - ADD: customized theme support
+ - CHORE: split some code, did some cleanup
 
 Notes histories see [here](./UpdateNotes.md).
