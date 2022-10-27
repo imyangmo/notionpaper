@@ -1,10 +1,24 @@
 ---
-const { siteTitle } = Astro.props;
+const { siteTitle, topics } = Astro.props;
+// console.log("in header.astro")
+// console.log(topics);
 ---
 <header>
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary bg-gradient">
 		<div class="container">
 			<a class="navbar-brand" href="/">{ siteTitle }</a>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav">
+				  <!-- <a class="nav-link active" aria-current="page" href="#">Home</a>
+				  <a class="nav-link" href="#">Features</a>
+				  <a class="nav-link" href="#">Pricing</a> -->
+					{
+						topics.map((topic) => (
+							<a class="nav-link" href={ "/topic/" + topic.topicID }>{topic.topicName}</a>
+						))
+					}
+				</div>
+			  </div>
 		</div>
 	</nav>
 </header>

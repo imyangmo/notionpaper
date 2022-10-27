@@ -1,3 +1,5 @@
+import url from 'node:url';
+
 export const dateFormatter = (input) => {
     let result = {
         date: '',
@@ -21,11 +23,20 @@ export const dateFormatter = (input) => {
 
 };
 
-export function youtubeParser(url){
+export function youtubeParser(addr){
     // modified from: https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
     const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    const match = url.match(regExp);
+    const match = addr.match(regExp);
     return (match&&match[7].length==11)? match[7] : null;
+}
+
+export function fileExtNameParser(addr){
+    const thisurl = new URL(addr);
+    const urlPath = thisurl.pathname;
+
+    const regExp = /\.[0-9a-z]+$/i;
+    const match = urlPath.match(regExp);
+    return match == null ? '' : match[0]
 }
 
 export function iconMaker(data){

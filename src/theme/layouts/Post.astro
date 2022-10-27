@@ -6,31 +6,28 @@ import Footer from './Footer.astro';
 
 import Block from './Block.astro';
 
-const { siteMeta, pageMeta, fullPageContents } = Astro.props;
-// const { siteTitle, siteDesc, pageIcon, pageCover, pageTitle, createdDate, createdTime, pageTags, fullPageContents } = Astro.props;
+const { siteMeta, pageMeta, fullPageContents, topics } = Astro.props;
 
 const thisTitle = pageMeta.pageTitle + ' - ' + siteMeta.siteTitle;
 ---
 <Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } siteIcon={ pageMeta.pageIcon }>
-    <Header siteTitle={ siteMeta.siteTitle} />
+    <Header siteTitle={ siteMeta.siteTitle} topics={ topics } />
         <main class="flex-shrink-0">
-            <div class="container text-start">
-
-                <div class="header-image" style={ "background-image: url(" + pageMeta.pageCover + ")" } >
-                    <div>
-                        <h1 class="page-title bg-body">{ pageMeta.pageTitle }</h1>
-                        <i class="page-title bg-body d-block">Create At: { pageMeta.createdDate + ' ' + pageMeta.createdTime } </i>
-                        {
-                            pageMeta.pageTags.length == 0
-                            ?
-                            null
-                            :
-                            <i class="page-title bg-body d-block">Tags: { pageMeta.pageTags.map((tag) => (<span class={"badge mx-1 " + tag.color + "_tag"}>{tag.name}</span>)) } </i>
-                        }
-                        
-                    </div>
+            <div class="header-image" style={ "background-image: url(" + pageMeta.pageCover + ")" } >
+                <div>
+                    <h1 class="page-title bg-body">{ pageMeta.pageTitle }</h1>
+                    <i class="page-title bg-body d-block">Create At: { pageMeta.createdDate + ' ' + pageMeta.createdTime } </i>
+                    {
+                        pageMeta.pageTags.length == 0
+                        ?
+                        null
+                        :
+                        <i class="page-title bg-body d-block">Tags: { pageMeta.pageTags.map((tag) => (<span class={"badge mx-1 " + tag.color + "_tag"}>{tag.name}</span>)) } </i>
+                    }
+                    
                 </div>
-            
+            </div>
+            <div class="container text-start">
                 <div class="container">
                     {
                         fullPageContents.map((block) =>(

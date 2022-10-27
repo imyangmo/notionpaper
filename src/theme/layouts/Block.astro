@@ -14,6 +14,7 @@ import Vid from './Blocks/Vid.astro'
 import VidYtb from './Blocks/VidYtb.astro'
 import TOC from './Blocks/TOC.astro'
 import Callout from './Blocks/Callout.astro'
+import File from './Blocks/File.astro'
 
 
 import Unsupported from './Blocks/Unsupported.astro'
@@ -73,6 +74,9 @@ const switcher = (block) => {
             break;
         case 'bulleted_list_item_group':
             return Ul;
+            break;
+        case 'file':
+            return File;
             break;
         default:
             return Unsupported;

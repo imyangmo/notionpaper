@@ -1,4 +1,9 @@
 # Update Notes
+**2022.10.19**
+ - ADD: customized theme support
+ - CHORE: split some code, did some cleanup
+
+---
 
 **2022.10.11**
  - ADD: callout and page tag display support

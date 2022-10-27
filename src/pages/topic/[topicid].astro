@@ -1,0 +1,28 @@
+---
+import Topic from '../../theme/layouts/Topic.astro';
+
+import { getTitle, getDesc, getTopics } from '../../components/SiteMeta.js';
+
+const { topicid } = Astro.params;
+
+
+
+export async function getStaticPaths(){
+    const topicList = getTopics.get();
+    return topicList.map((each) => {
+        return {
+            params: {topicid: each.topicID}
+        }
+    })
+};
+
+const siteMeta = {
+    siteTitle: getTitle.get(),
+    siteDesc: getDesc.get()
+}
+
+const topicList = getTopics.get();
+const topicPosts = topicList.filter(topic => topic.topicID == topicid);
+---
+<Topic siteMeta={ siteMeta } topics={ topicList } topicPosts={ topicPosts[0] } >
+</Topic>

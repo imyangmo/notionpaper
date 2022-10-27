@@ -155,8 +155,8 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
     </tr> 
     <tr>
         <td>File</td>
-        <td>📅 Planned</td>
-        <td></td>
+        <td>✅</td>
+        <td>Uploaded files only</td>
     </tr> 
     <tr>
         <td>PDF</td>
@@ -215,8 +215,7 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
 
 ## Update Notes
 
-**2022.10.19**
- - ADD: customized theme support
- - CHORE: split some code, did some cleanup
+**2022.10.27**
+ - ADD: Uploaded file support
 
 Notes histories see [here](./UpdateNotes.md).

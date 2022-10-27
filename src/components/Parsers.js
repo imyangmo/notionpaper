@@ -1,4 +1,4 @@
-import { dateFormatter, youtubeParser } from "./Utils.js"
+import { dateFormatter, youtubeParser, fileExtNameParser } from "./Utils.js"
 import { pageBlockFetcher } from "./Fetchers.js";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,7 +12,9 @@ export const indexParser = (data) => {
             date: '',
             time: '',
             title: '',
-            id: ''
+            id: '',
+            topicID: '',
+            topicName: ''
         };
 
         if('Original Create Time' in each.properties && each.properties['Original Create Time'].date != null ){
@@ -30,7 +32,25 @@ export const indexParser = (data) => {
 
         item.title = each.properties.Name.title[0].text.content;
         item.id = each.id;
-    
+
+        // console.log(each.properties)
+        if("Topic" in each.properties){
+            // console.log("is has topic")
+            if("select" in each.properties.Topic){
+                // console.log("is has topic.select");
+                if(each.properties.Topic.select != null){
+                    item.topicID = each.properties.Topic.select.id;
+                    item.topicName = each.properties.Topic.select.name;
+                }else{
+                    console.log("No Topic specified.")
+                }
+            }else{
+                console.log("The 'Topic' property is not a 'select' type");
+            }
+        }else{
+            console.log("The 'Topic' is not defined");
+        };
+
         content.push(item);
     });
 
@@ -201,6 +221,17 @@ async function blockParser(data){
         case 'numbered_list_item':
         case 'bulleted_list_item':
             block.listItems = data[data.type].rich_text.map((item) => richTextParser(item));
+            break;
+        case 'file':
+            const extName = fileExtNameParser(data[data.type].file.url);
+            const rdmName = uuidv4() + extName;
+            const downloader = new Downloader({
+                url: data[data.type].file.url,
+                directory: "./dist/post/assets",
+                fileName: rdmName
+            });
+            await downloader.download();
+            block.url = "../assets/" + rdmName;
             break;
     };
 
