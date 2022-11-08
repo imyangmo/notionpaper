@@ -1,15 +1,14 @@
 ---
 import Skeleton from './Skeleton.astro';
-
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 
-const { siteMeta, postList, topics } = Astro.props;
+const { siteMeta, postList, topics, ga3 } = Astro.props;
 
 const thisTitle = siteMeta.siteTitle + ' - ' + siteMeta.siteDesc;
 // const { siteTitle, siteDesc, siteIcon, postList } = Astro.props;
 ---
-<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } siteIcon={ siteMeta.siteIcon }>
+<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } siteIcon={ siteMeta.siteIcon } ga3={ ga3 }>
     <Header siteTitle={ siteMeta.siteTitle} topics={ topics } />
 <!-- <Skeleton siteTitle={ siteTitle } siteDesc={ siteDesc } siteIcon={ siteIcon }>
     <Header siteTitle={ siteTitle} /> -->

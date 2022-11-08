@@ -3,11 +3,11 @@ import Skeleton from './Skeleton.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 
-const { siteMeta, topics, topicPosts } = Astro.props;
+const { siteMeta, topics, topicPosts,ga3 } = Astro.props;
 
 const thisTitle = siteMeta.siteTitle + ' - ' + siteMeta.siteDesc;
 ---
-<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } >
+<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc }  ga3={ ga3 }>
     <Header siteTitle={ siteMeta.siteTitle} topics={ topics } />
         <main class="flex-shrink-0">
             <div class="container text-start">

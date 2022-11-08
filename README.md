@@ -22,6 +22,7 @@ You are more than welcome to make this project better.
 
 
 ## How to use
+### Run locally
 Short version:
 1. Clone this repo;
 2. Install Node.js 16.16 and dependencies;
@@ -31,8 +32,13 @@ Short version:
 6. Run `npm run build`;
 7. Deploy.
 
-
 Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-63078eb01ce3/) doc.
+
+### Run on Github Actions
+Check [this](https://docs.notionpaper.cc/post/f5f1a4b4-6dbe-4e03-a22d-6f33c130d84e/) doc if you:
+- Do not wish / know how to run Notionpaper locally on your computer
+- Do not wish to upload your site after every generation
+- have restricted Internet access (from certain regions of the world)
 
 ## Supported Features / Roadmap
 <table>
@@ -189,11 +195,21 @@ Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-6
         <td>Children blocks</td>
     </tr> 
 <tr>
-    <td rowspan="4">Expandability</td>
+    <td rowspan="6">Expandability</td>
     <td>Custom styles / Themes</td>
     <td>✅</td>
     <td>You could design and apply your own or others' theme</td>
 </tr>
+    <tr>
+        <td>Topics</td>
+        <td>✅</td>
+        <td>You could use 'Topic' property to group multiple posts as a topic</td>
+    </tr>
+    <tr>
+        <td>Google Analytics</td>
+        <td>✅</td>
+        <td>Supports GA3 and GA4</td>
+    </tr>
     <tr>
         <td>Custom pages</td>
         <td>📅 Planned</td>

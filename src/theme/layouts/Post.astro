@@ -6,11 +6,11 @@ import Footer from './Footer.astro';
 
 import Block from './Block.astro';
 
-const { siteMeta, pageMeta, fullPageContents, topics } = Astro.props;
+const { siteMeta, pageMeta, fullPageContents, topics, ga3 } = Astro.props;
 
 const thisTitle = pageMeta.pageTitle + ' - ' + siteMeta.siteTitle;
 ---
-<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } siteIcon={ pageMeta.pageIcon }>
+<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } siteIcon={ pageMeta.pageIcon }  ga3={ ga3 }>
     <Header siteTitle={ siteMeta.siteTitle} topics={ topics } />
         <main class="flex-shrink-0">
             <div class="header-image" style={ "background-image: url(" + pageMeta.pageCover + ")" } >

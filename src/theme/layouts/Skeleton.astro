@@ -5,7 +5,7 @@
 import './styles/callouts.scss';
 import './styles/styles.css';
 
-const { pageTitle, siteDesc, siteIcon } = Astro.props;
+const { pageTitle, siteDesc, siteIcon, ga3 } = Astro.props;
 
 ---
 <!DOCTYPE html>
@@ -37,6 +37,19 @@ const { pageTitle, siteDesc, siteIcon } = Astro.props;
         <meta property="twitter:title" content={pageTitle} />
         <meta property="twitter:description" content={siteDesc} />
         <!-- <meta property="twitter:image" content={new URL(image, Astro.url)} /> -->
+
+        {
+            ga3 == '' ?
+            null :
+            <script async src={ "https://www.googletagmanager.com/gtag/js?id=" + ga3 } ></script>
+            <script is:inline define:vars={{ga3}}>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', ga3);
+            </script>
+        }
+
     </head>
     <body class="d-flex flex-column h-100">
         <slot />
