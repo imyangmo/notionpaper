@@ -32,10 +32,10 @@ Short version:
 6. Run `npm run build`;
 7. Deploy.
 
-Full guide see [this](https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-63078eb01ce3/) doc.
+Full guide see [this](https://npdocs.dreambulare.com/post/6262938e-86d0-4214-af03-63078eb01ce3/) doc.
 
 ### Run on Github Actions
-Check [this](https://docs.notionpaper.cc/post/f5f1a4b4-6dbe-4e03-a22d-6f33c130d84e/) doc if you:
+Check [this](https://npdocs.dreambulare.com/post/f5f1a4b4-6dbe-4e03-a22d-6f33c130d84e/) doc if you:
 - Do not wish / know how to run Notionpaper locally on your computer
 - Do not wish to upload your site after every generation
 - have restricted Internet access (from certain regions of the world)
