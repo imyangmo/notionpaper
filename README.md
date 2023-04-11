@@ -4,7 +4,7 @@
    <br/>
   <img width="120" src="./logo.png" />
   <br/>
-  <b><a href="https://prelude.cc/">Blog Usage Showcase</a></b> | <b><a href="https://docs.notionpaper.cc/post/6262938e-86d0-4214-af03-63078eb01ce3/">Getting Started</a></b> | <b><a href="https://docs.notionpaper.cc/">Documentation</a></b> | <b><a href="https://github.com/imyangmo/notionpaper">GitHub</a></b>
+  <b><a href="https://dreambulare.com/">Blog Usage Showcase</a></b> | <b><a href="https://npdocs.dreambulare.com/post/6262938e-86d0-4214-af03-63078eb01ce3/">Getting Started</a></b> | <b><a href="https://npdocs.dreambulare.com/">Documentation</a></b> | <b><a href="https://github.com/imyangmo/notionpaper">GitHub</a></b>
   <br/><br/>
 </p>
 
