@@ -1,8 +1,13 @@
-import { DATABASE_ID, NOTION_TOKEN, NOTION_VERSION, NOTION_API_BASE_URL } from "../config"
+// import { DATABASE_ID, NOTION_TOKEN, NOTION_VERSION, NOTION_API_BASE_URL } from "../config"
 
-export async function pageBlockFetcher(id, next_cursor=null){
+const DATABASE_ID = import.meta.env.DATABASE_ID
+const NOTION_TOKEN = import.meta.env.NOTION_TOKEN
+const NOTION_VERSION = import.meta.env.NOTION_VERSION
+const NOTION_API_BASE_URL = import.meta.env.NOTION_API_BASE_URL
+
+export async function pageBlockFetcher(id, next_cursor = null) {
     let param = ""
-    if(next_cursor != null){
+    if (next_cursor != null) {
         param = "start_cursor=" + next_cursor
     }
 
@@ -10,7 +15,7 @@ export async function pageBlockFetcher(id, next_cursor=null){
     const fetchOptions = {
         method: 'GET',
         headers: {
-            'Authorization':'Bearer ' + NOTION_TOKEN,
+            'Authorization': 'Bearer ' + NOTION_TOKEN,
             'Notion-Version': NOTION_VERSION,
             'Content-Type': 'application/json'
         }
@@ -20,11 +25,11 @@ export async function pageBlockFetcher(id, next_cursor=null){
     return pageContentData;
 }
 
-export async function pageInfoFetcher(id){
+export async function pageInfoFetcher(id) {
     const pageInfoResp = await fetch(NOTION_API_BASE_URL + 'pages/' + id, {
         method: 'GET',
         headers: {
-            'Authorization':'Bearer ' + NOTION_TOKEN,
+            'Authorization': 'Bearer ' + NOTION_TOKEN,
             'Notion-Version': NOTION_VERSION,
             'Content-Type': 'application/json'
         }
@@ -33,7 +38,7 @@ export async function pageInfoFetcher(id){
     return pageInfoData;
 }
 
-export async function indexFetcher(){
+export async function indexFetcher() {
     const query = {
         "filter": {
             "and": [
@@ -56,7 +61,7 @@ export async function indexFetcher(){
     const response = await fetch(NOTION_API_BASE_URL + 'databases/' + DATABASE_ID + '/query', {
         method: 'POST',
         headers: {
-            'Authorization':'Bearer ' + NOTION_TOKEN,
+            'Authorization': 'Bearer ' + NOTION_TOKEN,
             'Notion-Version': NOTION_VERSION,
             'Content-Type': 'application/json'
         },
@@ -66,11 +71,11 @@ export async function indexFetcher(){
     return data;
 }
 
-export async function siteInfoFetcher(){
+export async function siteInfoFetcher() {
     const response = await fetch(NOTION_API_BASE_URL + 'databases/' + DATABASE_ID, {
         method: 'GET',
         headers: {
-            'Authorization':'Bearer ' + NOTION_TOKEN,
+            'Authorization': 'Bearer ' + NOTION_TOKEN,
             'Notion-Version': NOTION_VERSION,
             'Content-Type': 'application/json'
         }

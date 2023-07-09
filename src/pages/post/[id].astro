@@ -1,12 +1,11 @@
 ---
-import Post from '@theme/layouts/Post.astro';
+import Post from '../../theme/layouts/Post.astro';
 
-import { getTitle, getDesc, getPostList, getTopics } from '@components/SiteMeta.js';
-import { pageBlockFetcher, pageInfoFetcher } from '@components/Fetchers.js';
-import { pageParser } from "@components/Parsers.js";
-import { dateFormatter, iconMaker } from '@components/Utils.js';
+import { getTitle, getDesc, getPostList, getTopics } from '../../components/SiteMeta.js';
+import { pageBlockFetcher, pageInfoFetcher } from '../../components/Fetchers.js';
+import { pageParser } from "../../components/Parsers.js";
+import { dateFormatter, iconMaker } from '../../components/Utils.js';
 
-import { GOOGLE_ANALYTICS_3 } from "@config";
 
 import { v4 as uuidv4 } from 'uuid';
 import Downloader from "nodejs-file-downloader";
@@ -199,5 +198,5 @@ const pageMeta = {
 
 const topics = getTopics.get();
 ---
-<Post siteMeta={ siteMeta } pageMeta={ pageMeta } fullPageContents={ fullPageContents } topics={ topics }  ga3={GOOGLE_ANALYTICS_3} >
+<Post siteMeta={ siteMeta } pageMeta={ pageMeta } fullPageContents={ fullPageContents } topics={ topics } >
 </Post>

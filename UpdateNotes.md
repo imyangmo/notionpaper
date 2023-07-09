@@ -1,4 +1,9 @@
 # Update Notes
+
+**2022.10.27**
+ - ADD: Uploaded file support
+---
+
 **2022.10.19**
  - ADD: customized theme support
  - CHORE: split some code, did some cleanup
