@@ -17,15 +17,15 @@ export const indexParser = (data) => {
             topicName: ''
         };
 
-        if('Original Create Time' in each.properties && each.properties['Original Create Time'].date != null ){
+        if ('Original Create Time' in each.properties && each.properties['Original Create Time'].date != null) {
             item.date = dateFormatter(each.properties['Original Create Time'].date.start).date;
             item.time = dateFormatter(each.properties['Original Create Time'].date.start).time;
-        }else{
+        } else {
             // Where there is no original create time found
-            if('Create Time' in each.properties){
+            if ('Create Time' in each.properties) {
                 item.date = dateFormatter(each.properties['Create Time'].created_time).date;
                 item.time = dateFormatter(each.properties['Create Time'].created_time).time;
-            }else{
+            } else {
                 throw new Error('There is no Original Create Time nor Create Time property found.');
             };
         };
@@ -34,34 +34,34 @@ export const indexParser = (data) => {
         item.id = each.id;
 
         // console.log(each.properties)
-        if("Topic" in each.properties){
+        if ("Topic" in each.properties) {
             // console.log("is has topic")
-            if("select" in each.properties.Topic){
+            if ("select" in each.properties.Topic) {
                 // console.log("is has topic.select");
-                if(each.properties.Topic.select != null){
+                if (each.properties.Topic.select != null) {
                     item.topicID = each.properties.Topic.select.id;
                     item.topicName = each.properties.Topic.select.name;
-                }else{
+                } else {
                     console.log("No Topic specified.")
                 }
-            }else{
+            } else {
                 console.log("The 'Topic' property is not a 'select' type");
             }
-        }else{
+        } else {
             console.log("The 'Topic' is not defined");
         };
 
         content.push(item);
     });
 
-    content.sort((a,b) => {
+    content.sort((a, b) => {
         const date1 = Date.parse(a.date + ' ' + a.time);
         const date2 = Date.parse(b.date + ' ' + b.time);
-        if(date1 - date2 > 0){
+        if (date1 - date2 > 0) {
             return -1;
-        }else if(date1 - date2 < 0){
+        } else if (date1 - date2 < 0) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     })
@@ -80,7 +80,7 @@ const richTextParser = (data) => {
         page_id: ''
     }
 
-    switch(data.type){
+    switch (data.type) {
         case 'text':
             /*
             Notion could display texts with strikethrough and underline simultaneously,
@@ -88,12 +88,12 @@ const richTextParser = (data) => {
             will be override by another, so this needs to be handle seperately.
             */
             let anno = '';
-            if(data.annotations.strikethrough && data.annotations.underline){
+            if (data.annotations.strikethrough && data.annotations.underline) {
                 anno = anno + ' standul';
-            }else{
+            } else {
                 // Append rest of annotaitons
-                for (let [key, value ] of Object.entries(data.annotations)){
-                    if(key != 'color' && value){
+                for (let [key, value] of Object.entries(data.annotations)) {
+                    if (key != 'color' && value) {
                         // Skip color annotation and others that does not applied
                         anno = anno + ' ' + key
                     }
@@ -104,14 +104,14 @@ const richTextParser = (data) => {
             text.color = data.annotations.color;
             text.annotations = anno;
 
-            if(data.href != null){
+            if (data.href != null) {
                 text.link = data.href;
-            }else{
+            } else {
                 text.link = null;
             };
             break;
         case 'mention':
-            if(data.mention.type == 'page' ){
+            if (data.mention.type == 'page') {
                 text.type = 'mention_page';
                 text.content = data.plain_text;
                 text.page_id = data.mention.page.id.replace('-', '')
@@ -123,29 +123,29 @@ const richTextParser = (data) => {
 
 };
 
-async function blockParser(data){
+async function blockParser(data) {
     let block = {
         type: data.type,
         // id is for html link anchor purpose
-        id: '', 
+        id: '',
         text: [],
-        code:'',
-        rows:[],
+        code: '',
+        rows: [],
         language: '',
         url: '',
         listItems: [],
         children: false
     };
 
-    switch(data.type){
+    switch (data.type) {
         // for table of contents block, it does parses it but not generating it here
         // because if a page is larger than 100 blocks, the page content needs to be fetched multiple times
         // if it was generated here, the TOC wouldn't be correct
         case 'paragraph':
             block.text = data[data.type].rich_text.map((item) => richTextParser(item));
             break;
-        case 'heading_1': 
-        case 'heading_2': 
+        case 'heading_1':
+        case 'heading_2':
         case 'heading_3':
             block.id = data.id;
             block.text = data[data.type].rich_text.map((item) => richTextParser(item));
@@ -167,7 +167,7 @@ async function blockParser(data){
             const tableContent = await pageBlockFetcher(data.id);
 
             block.rows = tableContent.results.map((eachRow) => {
-                const rowArr =eachRow.table_row.cells.map((eachCell) => {
+                const rowArr = eachRow.table_row.cells.map((eachCell) => {
                     const textArr = eachCell.map((item) => {
                         return richTextParser(item);
                     });
@@ -177,16 +177,16 @@ async function blockParser(data){
             });
             break;
         case 'image':
-            switch(data[data.type].type){
+            switch (data[data.type].type) {
                 case 'file':
                     const rdmName = uuidv4();
                     const downloader = new Downloader({
                         url: data[data.type].file.url,
                         directory: "./dist/post/assets",
                         fileName: rdmName
-                      });
-                      await downloader.download();
-                      block.url = "../assets/" + rdmName
+                    });
+                    await downloader.download();
+                    block.url = "/post/assets/" + rdmName
                     break;
                 case 'external':
                     block.type = 'image_external';
@@ -195,23 +195,23 @@ async function blockParser(data){
             }
             break;
         case 'video':
-            switch(data[data.type].type){
+            switch (data[data.type].type) {
                 case 'file':
                     const rdmName = uuidv4();
                     const downloader = new Downloader({
                         url: data[data.type].file.url,
                         directory: "./dist/post/assets",
                         fileName: rdmName
-                      });
-                      await downloader.download();
-                      block.url = "../assets/" + rdmName
+                    });
+                    await downloader.download();
+                    block.url = "../assets/" + rdmName
                     break;
                 case 'external':
                     const explode = data[data.type].external.url.split(".");
-                    if( explode.includes('youtube') || explode.includes('youtu')){
+                    if (explode.includes('youtube') || explode.includes('youtu')) {
                         block.type = 'video_youtube';
                         block.url = youtubeParser(data[data.type].external.url);
-                    }else{
+                    } else {
                         block.type = 'video_external';
                         block.url = data[data.type].external.url;
                     };
@@ -235,7 +235,7 @@ async function blockParser(data){
             break;
     };
 
-    if(data.has_children && data.type != 'table' ){
+    if (data.has_children && data.type != 'table') {
         const childrenContent = await pageBlockFetcher(data.id);
         const childrenParsedList = childrenContent.results.map((item) => blockParser(item));
         block.children = await Promise.all(childrenParsedList);
@@ -245,7 +245,7 @@ async function blockParser(data){
     return block;
 }
 
-export async function pageParser(data){
+export async function pageParser(data) {
     //this shit costs me five straight hours!!! remember it!!! fucking async shit
     const promList = data.results.map((item) => blockParser(item))
     return Promise.all(promList);
