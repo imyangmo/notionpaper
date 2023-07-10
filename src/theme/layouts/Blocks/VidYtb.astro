@@ -1,14 +1,15 @@
 ---
 const { block } = Astro.props;
-
 ---
-<iframe 
-    width="560" 
-    height="315" 
-    src= { "https://www.youtube.com/embed/" + block.url }
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+
+<iframe
+    width="560"
+    height="315"
+    src={"https://www.youtube.com/embed/" + block.url}
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen
-    class="mx-auto d-block py-2">
+    class="mx-auto py-2"
+>
 </iframe>

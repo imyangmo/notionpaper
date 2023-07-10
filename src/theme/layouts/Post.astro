@@ -1,41 +1,60 @@
 ---
-import Skeleton from './Skeleton.astro';
+import Skeleton from "./Skeleton.astro";
 
-import Header from './Header.astro';
-import Footer from './Footer.astro';
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
 
-import Block from './Block.astro';
+import Block from "./Block.astro";
 
 const { siteMeta, pageMeta, fullPageContents, topics } = Astro.props;
 
-const thisTitle = pageMeta.pageTitle + ' - ' + siteMeta.siteTitle;
+const thisTitle = pageMeta.pageTitle + " - " + siteMeta.siteTitle;
 ---
-<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } siteIcon={ pageMeta.pageIcon }>
-    <Header siteTitle={ siteMeta.siteTitle} topics={ topics } />
-        <main class="flex-shrink-0">
-            <div class="header-image" style={ "background-image: url(" + pageMeta.pageCover + ")" } >
-                <div>
-                    <h1 class="page-title bg-body">{ pageMeta.pageTitle }</h1>
-                    <i class="page-title bg-body d-block">Create At: { pageMeta.createdDate + ' ' + pageMeta.createdTime } </i>
-                    {
-                        pageMeta.pageTags.length == 0
-                        ?
-                        null
-                        :
-                        <i class="page-title bg-body d-block">Tags: { pageMeta.pageTags.map((tag) => (<span class={"badge mx-1 " + tag.color + "_tag"}>{tag.name}</span>)) } </i>
+
+<Skeleton
+    pageTitle={thisTitle}
+    siteDesc={siteMeta.siteDesc}
+    siteIcon={pageMeta.pageIcon}
+>
+    <Header siteTitle={siteMeta.siteTitle} topics={topics} />
+    <div
+        class="hero article-hero"
+        style={"background-image: url(" + pageMeta.pageCover + ")"}
+    >
+        <div class="hero-overlay bg-opacity-60"></div>
+        <div class="hero-content text-center text-neutral-content">
+            <div class="max-w-prose">
+                <h1
+                    class="italic text-slate-700 bg-gray-100 py-2 mb-5 text-5xl font-bold"
+                >
+                    {pageMeta.pageTitle}
+                </h1>
+                <p class="text-slate-700 bg-gray-100 py-2 mb-5 italic">
+                    Create At: {
+                        pageMeta.createdDate + " " + pageMeta.createdTime
                     }
-                    
-                </div>
+                </p>
+                {
+                    pageMeta.pageTags.length == 0 ? null : (
+                        <p class=" py-2 mb-5">
+                            Tags:{" "}
+                            {pageMeta.pageTags.map((tag) => (
+                                <span
+                                    class={`rounded-full text-white px-2.5 mr-1 ${tag.color}_background`}
+                                >
+                                    {tag.name}
+                                </span>
+                            ))}{" "}
+                        </p>
+                    )
+                }
             </div>
-            <div class="container text-start">
-                <div class="container">
-                    {
-                        fullPageContents.map((block) =>(
-                            <Block block={block}></Block>
-                        ))
-                    }
-                </div>
-            </div>
-        </main>
+        </div>
+    </div>
+
+    <article class="prose lg:prose-xl mx-auto pt-4">
+        {fullPageContents.map((block) => <Block block={block} />)}
+    </article>
+
     <Footer />
 </Skeleton>

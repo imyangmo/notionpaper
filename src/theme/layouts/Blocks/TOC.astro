@@ -1,14 +1,64 @@
 ---
 const { block } = Astro.props;
----
-<div class="card mt-4">
-    <div class="card-body">
-        {
-            block.listItems.map((each) => (
-                <a href={'#' + each.id} class={'toc_level_' + each.level}>
-                    {each.text}
-                </a>
-            ))
+
+function rearrangeObjects(array) {
+    const result = [];
+
+    array.forEach((obj) => {
+        obj.children = null;
+    });
+
+    for (let i = 0; i < array.length; i++) {
+        const currentObject = array[i];
+        let inserted = false;
+
+        for (let j = i - 1; j >= 0; j--) {
+            const previousObject = array[j];
+
+            if (currentObject.level > previousObject.level) {
+                if (!previousObject.children) {
+                    previousObject.children = [];
+                }
+                previousObject.children.push(currentObject);
+                inserted = true;
+                break;
+            }
         }
-    </div>
-</div>   
+
+        if (!inserted) {
+            result.push(currentObject);
+        }
+    }
+
+    return result;
+}
+
+const arrangedBlock = rearrangeObjects(block.listItems);
+console.log(JSON.stringify(arrangedBlock));
+---
+
+<ul class="menu bg-base-200 w-full rounded-box">
+    {
+        () => {
+            function tester(objs) {
+                return objs.map((each) => {
+                    if (each.children == null) {
+                        return (
+                            <li>
+                                <a href={"#" + each.id}>{each.text}</a>
+                            </li>
+                        );
+                    } else {
+                        return (
+                            <li>
+                                <a href={"#" + each.id}>{each.text}</a>
+                                <ul>{tester(each.children)}</ul>
+                            </li>
+                        );
+                    }
+                });
+            }
+            return tester(arrangedBlock);
+        }
+    }
+</ul>

@@ -1,26 +1,34 @@
 ---
-import Skeleton from './Skeleton.astro';
-import Header from './Header.astro';
-import Footer from './Footer.astro';
+import Skeleton from "./Skeleton.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
 
 const { siteMeta, topics, topicPosts } = Astro.props;
 
-const thisTitle = siteMeta.siteTitle + ' - ' + siteMeta.siteDesc;
+const thisTitle = siteMeta.siteTitle + " - " + siteMeta.siteDesc;
 ---
-<Skeleton pageTitle={ thisTitle } siteDesc={ siteMeta.siteDesc } >
-    <Header siteTitle={ siteMeta.siteTitle} topics={ topics } />
-        <main class="flex-shrink-0">
-            <div class="container text-start">
-                <h1>{ topicPosts.topicName }</h1>
+
+<Skeleton pageTitle={thisTitle} siteDesc={siteMeta.siteDesc}>
+    <Header siteTitle={siteMeta.siteTitle} topics={topics} />
+    <div class="overflow-x-auto container mx-auto index-div">
+        <h1 class="text-2xl font-bold my-4">{topicPosts.topicName}</h1>
+        <table class="table text-lg">
+            <tbody>
                 {
-                    topicPosts.post.map((item) => 
-                        <div class="row lh-lg fs-5">
-                            <div class="col-3 fst-italic">{ item.date } { item.time }</div>
-                            <div class="col-9"><a href={ "/post/" + item.id }>{ item.title }</a></div>
-                        </div> 
-                    )
+                    topicPosts.post.map((item) => (
+                        <tr class="hover">
+                            <th>
+                                <a href={"/post/" + item.id}>{item.title}</a>
+                            </th>
+                            <td>
+                                {item.date} {item.time}
+                            </td>
+                        </tr>
+                    ))
                 }
-            </div>
-        </main>
+                <!-- row 1 -->
+            </tbody>
+        </table>
+    </div>
     <Footer />
 </Skeleton>

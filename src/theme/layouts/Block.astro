@@ -1,103 +1,93 @@
 ---
-import H1 from './Blocks/H1.astro'
-import H2 from './Blocks/H2.astro'
-import H3 from './Blocks/H3.astro'
-import P from './Blocks/P.astro'
-import Hr from './Blocks/Hr.astro'
-import Quote from './Blocks/Quote.astro'
-import Codes from './Blocks/Codes.astro'
-import Table from './Blocks/Table.astro'
-import Ol from './Blocks/Ol.astro'
-import Ul from './Blocks/Ul.astro'
-import Img from './Blocks/Img.astro'
-import Vid from './Blocks/Vid.astro'
-import VidYtb from './Blocks/VidYtb.astro'
-import TOC from './Blocks/TOC.astro'
-import Callout from './Blocks/Callout.astro'
-import File from './Blocks/File.astro'
+import H1 from "./Blocks/H1.astro";
+import H2 from "./Blocks/H2.astro";
+import H3 from "./Blocks/H3.astro";
+import P from "./Blocks/P.astro";
+import Hr from "./Blocks/Hr.astro";
+import Quote from "./Blocks/Quote.astro";
+import Codes from "./Blocks/Codes.astro";
+import Table from "./Blocks/Table.astro";
+import Ol from "./Blocks/Ol.astro";
+import Ul from "./Blocks/Ul.astro";
+import Img from "./Blocks/Img.astro";
+import Vid from "./Blocks/Vid.astro";
+import VidYtb from "./Blocks/VidYtb.astro";
+import TOC from "./Blocks/TOC.astro";
+import Callout from "./Blocks/Callout.astro";
+import File from "./Blocks/File.astro";
 
+import Unsupported from "./Blocks/Unsupported.astro";
 
-import Unsupported from './Blocks/Unsupported.astro'
-
-import Block from './Block.astro'
+import Block from "./Block.astro";
 
 const { block } = Astro.props;
 
-// console.log("processing block:")
-// console.log(block)
-
 const switcher = (block) => {
-    switch(block.type){
-        case 'table_of_contents':
+    switch (block.type) {
+        case "table_of_contents":
             return TOC;
             break;
-        case 'heading_1':
+        case "heading_1":
             return H1;
             break;
-        case 'heading_2':
+        case "heading_2":
             return H2;
             break;
-        case 'heading_3':
+        case "heading_3":
             return H3;
             break;
-        case 'paragraph':
+        case "paragraph":
             return P;
             break;
-        case 'divider':
+        case "divider":
             return Hr;
             break;
-        case 'quote':
+        case "quote":
             return Quote;
             break;
-        case 'callout':
+        case "callout":
             return Callout;
             break;
-        case 'code':
+        case "code":
             return Codes;
             break;
-        case 'table':
+        case "table":
             return Table;
             break;
-        case 'image':
-        case 'image_external':
+        case "image":
+        case "image_external":
             return Img;
             break;
-        case 'video':
-        case 'video_external':
+        case "video":
+        case "video_external":
             return Vid;
             break;
-        case 'video_youtube':
+        case "video_youtube":
             return VidYtb;
             break;
-        case 'numbered_list_item_group':
+        case "numbered_list_item_group":
             return Ol;
             break;
-        case 'bulleted_list_item_group':
+        case "bulleted_list_item_group":
             return Ul;
             break;
-        case 'file':
+        case "file":
             return File;
             break;
         default:
             return Unsupported;
-
-
-}
-}
-const ThisComp = switcher(block)
-
+    }
+};
+const ThisComp = switcher(block);
 ---
 
-<ThisComp block= { block }></ThisComp>
+<ThisComp block={block} />
 {
-    block.children != false
-    ?
-    <div style="padding-left: 2vw;">
-        {
-            block.children.map((item) => <Block block={item}></Block>)
-        }
-    </div>
-    
-    :
-    null
+    block.children != false ? (
+        <div style="padding-left: 2vw;">
+            {block.children.map((item) => (
+                <Block block={item} />
+            ))}
+        </div>
+    ) : null
 }

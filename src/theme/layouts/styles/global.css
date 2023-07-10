@@ -1,67 +1,97 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
-body {
-	font-family: Verdana, sans-serif;
-	margin: auto;
-	padding: 20px;
-	max-width: 65ch;
-	text-align: left;
-	background-color: #fff;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	line-height: 1.5;
-	color: #444;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.standul {
+    text-decoration: line-through underline;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-strong,
-b {
-	color: #222;
+
+.strikethrough {
+    @apply line-through
 }
-a {
-	color: #3273dc;
+
+/* .underline {
+    @apply underline underline-offset-8
+} */
+
+/* .italic {
+    @apply italic
+} */
+
+.bold {
+    @apply font-bold
 }
-nav a {
-	margin-right: 10px;
+
+/* Color of the text. Possible values are: "default", "gray", "brown", "orange", "yellow", "green", "blue", "purple", "pink", "red", "gray_background", "brown_background", "orange_background", "yellow_background", "green_background", "blue_background", "purple_background", "pink_background", "red_background". */
+/* Color of the option. Possible values include: default, gray, brown, orange, yellow, green, blue, purple, pink, red. */
+.gray {
+    @apply text-gray-600
 }
-textarea {
-	width: 100%;
-	font-size: 16px;
+
+.brown {
+    @apply text-amber-600
 }
-input {
-	font-size: 16px;
+
+.orange {
+    @apply text-orange-600
 }
-content {
-	line-height: 1.6;
+
+.yellow {
+    @apply text-yellow-600
 }
-table {
-	width: 100%;
+
+.green {
+    @apply text-green-600
 }
-img {
-	max-width: 100%;
-	height: auto;
+
+.blue {
+    @apply text-sky-600
 }
-code {
-	padding: 2px 5px;
-	background-color: #f2f2f2;
+
+.pink {
+    @apply text-pink-600
 }
-pre {
-	padding: 1rem;
+
+.purple {
+    @apply text-purple-600
 }
-pre > code {
-	all: unset;
+
+.red {
+    @apply text-rose-600
 }
-blockquote {
-	border: 1px solid #999;
-	color: #222;
-	padding: 2px 0px 2px 20px;
-	margin: 0px;
-	font-style: italic;
+
+.gray_background {
+    @apply bg-gray-600
+}
+
+.brown_background {
+    @apply bg-amber-600
+}
+
+.orange_background {
+    @apply bg-orange-600
+}
+
+.yellow_background {
+    @apply bg-yellow-600
+}
+
+.green_background {
+    @apply bg-green-600
+}
+
+.blue_background {
+    @apply bg-sky-600
+}
+
+.pink_background {
+    @apply bg-pink-600
+}
+
+.purple_background {
+    @apply bg-purple-600
+}
+
+.red_background {
+    @apply bg-rose-600
 }

@@ -1,0 +1,13 @@
+.article-hero {
+    height: 50vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.index-div {
+    flex: 1;
+}
