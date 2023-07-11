@@ -3,6 +3,7 @@ import { pageBlockFetcher } from "./Fetchers.js";
 import { v4 as uuidv4 } from 'uuid';
 
 import Downloader from "nodejs-file-downloader";
+import { getImage } from '@astrojs/image';
 
 export const indexParser = (data) => {
     let content = [];
@@ -182,7 +183,7 @@ async function blockParser(data) {
                     const rdmName = uuidv4();
                     const downloader = new Downloader({
                         url: data[data.type].file.url,
-                        directory: "./dist/post/assets",
+                        directory: "./.vercel/output/static/post/assets",
                         fileName: rdmName
                     });
                     await downloader.download();

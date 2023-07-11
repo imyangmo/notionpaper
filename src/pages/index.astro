@@ -1,21 +1,14 @@
 ---
-import Homepage from "../theme/layouts/Homepage.astro";
+import Homepage from '../theme/layouts/Homepage.astro';
 
-import { indexParser } from "../components/Parsers.js";
-import { indexFetcher, siteInfoFetcher } from "../components/Fetchers.js";
-import {
-    getTitle,
-    setTitle,
-    getDesc,
-    setDesc,
-    setPostList,
-    setTopics,
-} from "../components/SiteMeta.js";
+import { indexParser } from "../components/Parsers.js"
+import { indexFetcher, siteInfoFetcher } from '../components/Fetchers.js'
+import { getTitle, setTitle, getDesc, setDesc, setPostList, setTopics } from '../components/SiteMeta.js'
 import { iconMaker } from "../components/Utils";
 
-const siteInfo = await siteInfoFetcher();
-setTitle(siteInfo.title[0].plain_text);
-setDesc(siteInfo.description[0].plain_text);
+const siteInfo = await siteInfoFetcher()
+setTitle(siteInfo.title[0].plain_text)
+setDesc(siteInfo.description[0].plain_text)
 
 const postListResp = await indexFetcher();
 const postListDate = indexParser(postListResp.results);
@@ -33,35 +26,38 @@ postListDate.forEach((each) => {
         id: each.id,
         title: each.title,
         date: each.date,
-        time: each.time,
+        time: each.time
     };
 
-    if (each.topicID == "") {
+    if(each.topicID == ''){
         console.log("Empty topic, skipped");
-    } else {
-        if (topicIndex.includes(each.topicID)) {
-            topics.forEach((eachTopic) => {
-                if (eachTopic.topicID == each.topicID) {
+    }else{
+        if(topicIndex.includes(each.topicID)){
+            topics.forEach((eachTopic) =>{
+                if(eachTopic.topicID == each.topicID){
                     eachTopic.post.push(thisPost);
                 }
             });
-        } else {
-            topics.push({
-                topicID: each.topicID,
-                topicName: each.topicName,
-                post: [thisPost],
-            });
+        }else{
+            topics.push(
+                {
+                    topicID: each.topicID,
+                    topicName: each.topicName,
+                    post:[thisPost]
+                }
+            );
             topicIndex.push(each.topicID);
-        }
-    }
+        };
+    };
 });
 setTopics(topics);
 
 const siteMeta = {
     siteTitle: getTitle.get(),
     siteDesc: getDesc.get(),
-    siteIcon: iconMaker(siteInfo),
-};
+    siteIcon: iconMaker(siteInfo)
+}
 ---
 
-<Homepage siteMeta={siteMeta} postList={postListDate} topics={topics} />
+<Homepage siteMeta={ siteMeta } postList={ postListDate } topics={ topics }>
+</Homepage>

@@ -1,12 +1,8 @@
 # Update Notes
-**2023.7.10**
- - OPTI: Rewrote the default theme by using DaisyUI, now it looks much better now.
-
----
 **2023.7.9**
  - OPTI: Read config variables from .env instead of config file
 
----
+ ---
 
 **2022.10.27**
  - ADD: Uploaded file support

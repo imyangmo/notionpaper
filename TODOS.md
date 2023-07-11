@@ -10,3 +10,12 @@ limitation:
             function gtag() { dataLayer.push(arguments); }
             gtag(' js', new Date()); gtag('config', '{{index_object.ga}}'); 
         </script>
+
+{
+	"version": 3,
+	"routes": [
+		{
+			"handle": "filesystem"
+		}
+	]
+}

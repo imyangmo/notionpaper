@@ -2,6 +2,8 @@
 dist/
 _github/
 _build.js
+.vercel/
+.vscode/
 
 # dependencies
 node_modules/
@@ -14,8 +16,8 @@ pnpm-debug.log*
 
 
 # environment variables
-.env
 .env.production
 
 # macOS-specific files
 .DS_Store
+
