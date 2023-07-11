@@ -219,7 +219,9 @@ Check [this](https://npdocs.dreambulare.com/post/f5f1a4b4-6dbe-4e03-a22d-6f33c13
 
 
 ## Update Notes
-**2023.7.10**
- - OPTI: Rewrote the default theme by using DaisyUI, now it looks much better now.
+**2023.7.11**
+ - ADD: Add Vercel analytics support.
+ - CHORE: Rewrote the default theme by using DaisyUI, now it looks much better now.
+ - FIX: fixed image and video path issue.
 
 Notes histories see [here](./UpdateNotes.md).

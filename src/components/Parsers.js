@@ -204,7 +204,7 @@ async function blockParser(data) {
                         fileName: rdmName
                     });
                     await downloader.download();
-                    block.url = "../assets/" + rdmName
+                    block.url = "/post/assets/" + rdmName
                     break;
                 case 'external':
                     const explode = data[data.type].external.url.split(".");

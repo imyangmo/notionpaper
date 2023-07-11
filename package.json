@@ -10,12 +10,11 @@
     "astro": "astro"
   },
   "devDependencies": {
-    "@astrojs/image": "^0.5.1",
     "@astrojs/mdx": "^0.10.2",
     "@astrojs/rss": "^1.0.0",
     "@astrojs/sitemap": "^1.0.0",
     "@tailwindcss/typography": "^0.5.9",
-    "astro": "^1.1.1",
+    "astro": "^2.8.0",
     "autoprefixer": "^10.4.14",
     "daisyui": "^3.2.1",
     "postcss": "^8.4.25",
@@ -24,6 +23,7 @@
   "dependencies": {
     "@astrojs/node": "^1.0.0",
     "@astrojs/partytown": "^1.2.3",
+    "@astrojs/vercel": "^3.7.0",
     "fs-extra": "^10.1.0",
     "nanostores": "^0.7.0",
     "nodejs-file-downloader": "^4.10.2",
