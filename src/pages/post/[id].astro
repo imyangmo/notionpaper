@@ -1,45 +1,52 @@
 ---
-import Post from '../../theme/layouts/Post.astro';
+import Post from "../../theme/layouts/Post.astro";
 
-import { getTitle, getDesc, getPostList, getTopics } from '../../components/SiteMeta.js';
-import { pageBlockFetcher, pageInfoFetcher } from '../../components/Fetchers.js';
+import {
+    getTitle,
+    getDesc,
+    getPostList,
+    getTopics,
+} from "../../components/SiteMeta.js";
+import {
+    pageBlockFetcher,
+    pageInfoFetcher,
+} from "../../components/Fetchers.js";
 import { pageParser } from "../../components/Parsers.js";
-import { dateFormatter, iconMaker } from '../../components/Utils.js';
+import { dateFormatter, iconMaker } from "../../components/Utils.js";
 
-
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import Downloader from "nodejs-file-downloader";
 
 const { id } = Astro.params;
 
-export async function getStaticPaths(){
-    const postList = getPostList.get()
+export async function getStaticPaths() {
+    const postList = getPostList.get();
     return postList.map((each) => {
         return {
-            params: {id: each}
-        }
-    })
-};
+            params: { id: each },
+        };
+    });
+}
 
-console.log("Generating page for " + id );
+console.log("Generating page for " + id);
 //fetch page meta data
 const pageInfoData = await pageInfoFetcher(id);
 //generate page cover
-let pageCover = '';
-if(pageInfoData.cover != null){
-    switch(pageInfoData.cover.type){
-        case 'external':
+let pageCover = "";
+if (pageInfoData.cover != null) {
+    switch (pageInfoData.cover.type) {
+        case "external":
             pageCover = pageInfoData.cover.external.url;
             break;
-        case 'file':
+        case "file":
             const rdmName = uuidv4();
             const downloader = new Downloader({
                 url: pageInfoData.cover.file.url,
-                directory: "./dist/post/assets",
-                fileName: rdmName
-                });
+                directory: "./.vercel/output/static/post/assets",
+                fileName: rdmName,
+            });
             await downloader.download();
-            pageCover = "../assets/" + rdmName;
+            pageCover = "/post/assets/" + rdmName;
             break;
     }
 }
@@ -47,145 +54,149 @@ if(pageInfoData.cover != null){
 // const pageTitle = pageInfoData.properties.Name.title[0].plain_text;
 
 //generate create date and time
-let createdDate = 'Unspecified';
-let createdTime = 'Unspecified';
-if(pageInfoData.properties['Original Create Time'].date == null){
-    ({ date: createdDate, time: createdTime } = dateFormatter(pageInfoData.created_time))
-}else{
-    ({ date: createdDate, time: createdTime } = dateFormatter(pageInfoData.properties['Original Create Time'].date.start))
+let createdDate = "Unspecified";
+let createdTime = "Unspecified";
+if (pageInfoData.properties["Original Create Time"].date == null) {
+    ({ date: createdDate, time: createdTime } = dateFormatter(
+        pageInfoData.created_time
+    ));
+} else {
+    ({ date: createdDate, time: createdTime } = dateFormatter(
+        pageInfoData.properties["Original Create Time"].date.start
+    ));
 }
 
 //generate page tags
 let pageTags;
-if(pageInfoData.properties.Tags === undefined){
-    console.log("Your database does not have a 'Tags' property, skip tag generation.")
-}else{
+if (pageInfoData.properties.Tags === undefined) {
+    console.log(
+        "Your database does not have a 'Tags' property, skip tag generation."
+    );
+} else {
     pageTags = pageInfoData.properties.Tags.multi_select;
 }
 
 // const siteTitle = getTitle.get();
 // const siteDesc = getDesc.get();
 
-
 //fetch page contents
 let next_cursor = null;
 let fullPageContents = [];
-while(true){
+while (true) {
     const pageContentData = await pageBlockFetcher(id, next_cursor);
     const pageParsedData = await pageParser(pageContentData);
-    fullPageContents.push(...pageParsedData)
-    if(pageContentData.has_more){
-        console.log("This page has more content, fetching...")
+    fullPageContents.push(...pageParsedData);
+    if (pageContentData.has_more) {
+        console.log("This page has more content, fetching...");
         next_cursor = pageContentData.next_cursor;
-    }else{
+    } else {
         break;
     }
-};
+}
 //generate page contents
-function listMerger(pageContents){
-    console.log("Merging list items...")
+function listMerger(pageContents) {
+    console.log("Merging list items...");
     let tmp = [];
 
     let index = 0;
-    while(index < pageContents.length){
-        if(pageContents[index].type != 'numbered_list_item' && pageContents[index].type != 'bulleted_list_item'){
-                // current item is not a list block, copy and skip
-                tmp.push(pageContents[index]);
-                index += 1;
-        }else{
+    while (index < pageContents.length) {
+        if (
+            pageContents[index].type != "numbered_list_item" &&
+            pageContents[index].type != "bulleted_list_item"
+        ) {
+            // current item is not a list block, copy and skip
+            tmp.push(pageContents[index]);
+            index += 1;
+        } else {
             // current item is a list block
-            try{
+            try {
                 tmp.at(-1).type;
-            } catch(error){
+            } catch (error) {
                 // if there is no item in the new list, means it is the first item from the old list, append it anyways
-                tmp.push(
-                    {
-                        type: pageContents[index].type + "_group",
-                        origin_type: pageContents[index].type,
-                        items: [ pageContents[index] ],
-                        children: false
-                        // list gourp should not have children, only list item has children
-                    }
-                );
+                tmp.push({
+                    type: pageContents[index].type + "_group",
+                    origin_type: pageContents[index].type,
+                    items: [pageContents[index]],
+                    children: false,
+                    // list gourp should not have children, only list item has children
+                });
                 index += 1;
                 continue;
-            };
+            }
             // if the new list not empty
-            if( tmp.at(-1).type == pageContents[index].type + '_group'){
+            if (tmp.at(-1).type == pageContents[index].type + "_group") {
                 // if the last item from the new list is as same as the current item from the old list
-                tmp.at(-1).items.push(pageContents[index])
+                tmp.at(-1).items.push(pageContents[index]);
                 index += 1;
-            }else{
+            } else {
                 // means current item is a new list type
-                tmp.push(
-                    {
-                        type: pageContents[index].type + "_group",
-                        origin_type: pageContents[index].type,
-                        items: [ pageContents[index] ],
-                        children: false
-                    }
-                );
+                tmp.push({
+                    type: pageContents[index].type + "_group",
+                    origin_type: pageContents[index].type,
+                    items: [pageContents[index]],
+                    children: false,
+                });
                 index += 1;
-            };
-        };
-
-    };
+            }
+        }
+    }
     return tmp;
 }
 
-function listMergerHandler(pageContents){
+function listMergerHandler(pageContents) {
     const mergedContent = listMerger(pageContents);
     mergedContent.forEach((block) => {
-        if(block.type == 'numbered_list_item_group' || block.type == 'bulleted_list_item_group'){
+        if (
+            block.type == "numbered_list_item_group" ||
+            block.type == "bulleted_list_item_group"
+        ) {
             block.items.forEach((item) => {
-                if(item.children != false){
+                if (item.children != false) {
                     const result = listMergerHandler(item.children);
                     item.children = result;
                 }
-            })
+            });
         }
-    })
+    });
     return mergedContent;
 }
 
-fullPageContents = listMergerHandler(fullPageContents)
+fullPageContents = listMergerHandler(fullPageContents);
 
 //generate table of contents for this page
-function tocGenerator(pageContents){
-    console.log("Generating table of contents...")
-    const headingTypes = ['heading_1', 'heading_2', 'heading_3'];
+function tocGenerator(pageContents) {
+    console.log("Generating table of contents...");
+    const headingTypes = ["heading_1", "heading_2", "heading_3"];
     const headingLevel = {
-        'heading_1': 1,
-        'heading_2': 2,
-        'heading_3': 3
-    }
+        heading_1: 1,
+        heading_2: 2,
+        heading_3: 3,
+    };
 
     let listItems = [];
     pageContents.forEach((item) => {
-        if(headingTypes.includes(item.type)){
+        if (headingTypes.includes(item.type)) {
             const text = item.text.map((span) => span.content);
-            listItems.push( {
+            listItems.push({
                 level: headingLevel[item.type],
                 id: item.id,
-                text: text.join('')
-            } );
+                text: text.join(""),
+            });
         }
-    })
+    });
     return listItems;
-};
+}
 
 fullPageContents.forEach((item) => {
-    if(item.type == 'table_of_contents'){
+    if (item.type == "table_of_contents") {
         item.listItems = tocGenerator(fullPageContents);
     }
 });
 
-
-
 const siteMeta = {
     siteTitle: getTitle.get(),
-    siteDesc: getDesc.get()
-}
+    siteDesc: getDesc.get(),
+};
 
 const pageMeta = {
     pageIcon: iconMaker(pageInfoData),
@@ -193,10 +204,15 @@ const pageMeta = {
     pageTitle: pageInfoData.properties.Name.title[0].plain_text,
     createdDate: createdDate,
     createdTime: createdTime,
-    pageTags: pageTags
-}
+    pageTags: pageTags,
+};
 
 const topics = getTopics.get();
 ---
-<Post siteMeta={ siteMeta } pageMeta={ pageMeta } fullPageContents={ fullPageContents } topics={ topics } >
-</Post>
+
+<Post
+    siteMeta={siteMeta}
+    pageMeta={pageMeta}
+    fullPageContents={fullPageContents}
+    topics={topics}
+/>

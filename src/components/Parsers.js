@@ -201,7 +201,7 @@ async function blockParser(data) {
                     const rdmName = uuidv4();
                     const downloader = new Downloader({
                         url: data[data.type].file.url,
-                        directory: "./dist/post/assets",
+                        directory: "./.vercel/output/static/post/assets",
                         fileName: rdmName
                     });
                     await downloader.download();

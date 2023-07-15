@@ -22,9 +22,19 @@ You are more than welcome to make this project better.
 
 
 ## How to use
+### Deploy on Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fimyangmo%2Fnotionpaper&env=DATABASE_ID,NOTION_TOKEN,NOTION_VERSION,NOTION_API_BASE_URL)
+
+Click button above to deploy on Vercel.
+
+Tutorials can be found on [here](https://npdocs.dreambulare.com/post/fd7a3ccb-357f-4b21-ad07-c17a5dfd54af).
+
+
+### Run Locally
+If you prefer run this tool locally and deploy to a desired destination, you could follow these steps:
 Short version:
 1. Clone this repo;
-2. Install Node.js 16.16 and dependencies;
+2. Install Node.js 18.x and dependencies;
 3. Apply for Notion API token;
 4. Prepare the database;
 5. Fill the token and database ID in the config file;
@@ -32,6 +42,7 @@ Short version:
 7. Deploy.
 
 Full guide see [this](https://npdocs.dreambulare.com/post/6262938e-86d0-4214-af03-63078eb01ce3/) doc.
+
 
 ### Run on Github Actions
 Check [this](https://npdocs.dreambulare.com/post/f5f1a4b4-6dbe-4e03-a22d-6f33c130d84e/) doc if you:
