@@ -1,9 +1,7 @@
-// import { DATABASE_ID, NOTION_TOKEN, NOTION_VERSION, NOTION_API_BASE_URL } from "../config"
+import { NOTION_VERSION, NOTION_API_BASE_URL } from "../notionConfig"
 
 const DATABASE_ID = import.meta.env.DATABASE_ID
 const NOTION_TOKEN = import.meta.env.NOTION_TOKEN
-const NOTION_VERSION = import.meta.env.NOTION_VERSION
-const NOTION_API_BASE_URL = import.meta.env.NOTION_API_BASE_URL
 
 export async function pageBlockFetcher(id, next_cursor = null) {
     let param = ""

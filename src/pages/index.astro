@@ -1,20 +1,32 @@
 ---
-import Homepage from '../theme/layouts/Homepage.astro';
-
-import { indexParser } from "../components/Parsers.js"
-import { indexFetcher, siteInfoFetcher } from '../components/Fetchers.js'
-import { getTitle, setTitle, getDesc, setDesc, setPostList, setTopics } from '../components/SiteMeta.js'
+import { indexParser } from "../components/Parsers.js";
+import { indexFetcher, siteInfoFetcher } from "../components/Fetchers.js";
+import {
+  getTitle,
+  setTitle,
+  getDesc,
+  setDesc,
+  setPostList,
+  setTopics,
+} from "../components/SiteMeta.js";
 import { iconMaker } from "../components/Utils";
 
-const siteInfo = await siteInfoFetcher()
-setTitle(siteInfo.title[0].plain_text)
-setDesc(siteInfo.description[0].plain_text)
+const theme = import.meta.env.THEME;
+//------
+// import Homepage from "../theme/layouts/Homepage.astro";
+//------
+
+const Homepage = (await import(`../theme/${theme}/Homepage.astro`)).default;
+
+const siteInfo = await siteInfoFetcher();
+setTitle(siteInfo.title[0].plain_text);
+setDesc(siteInfo.description[0].plain_text);
 
 const postListResp = await indexFetcher();
 const postListDate = indexParser(postListResp.results);
 
 const postList = postListDate.map((item) => {
-    return item.id;
+  return item.id;
 });
 setPostList(postList);
 
@@ -22,42 +34,39 @@ setPostList(postList);
 let topics = [];
 let topicIndex = [];
 postListDate.forEach((each) => {
-    const thisPost = {
-        id: each.id,
-        title: each.title,
-        date: each.date,
-        time: each.time
-    };
+  const thisPost = {
+    id: each.id,
+    title: each.title,
+    date: each.date,
+    time: each.time,
+  };
 
-    if(each.topicID == ''){
-        console.log("Empty topic, skipped");
-    }else{
-        if(topicIndex.includes(each.topicID)){
-            topics.forEach((eachTopic) =>{
-                if(eachTopic.topicID == each.topicID){
-                    eachTopic.post.push(thisPost);
-                }
-            });
-        }else{
-            topics.push(
-                {
-                    topicID: each.topicID,
-                    topicName: each.topicName,
-                    post:[thisPost]
-                }
-            );
-            topicIndex.push(each.topicID);
-        };
-    };
+  if (each.topicID == "") {
+    console.log("Empty topic, skipped");
+  } else {
+    if (topicIndex.includes(each.topicID)) {
+      topics.forEach((eachTopic) => {
+        if (eachTopic.topicID == each.topicID) {
+          eachTopic.post.push(thisPost);
+        }
+      });
+    } else {
+      topics.push({
+        topicID: each.topicID,
+        topicName: each.topicName,
+        post: [thisPost],
+      });
+      topicIndex.push(each.topicID);
+    }
+  }
 });
 setTopics(topics);
 
 const siteMeta = {
-    siteTitle: getTitle.get(),
-    siteDesc: getDesc.get(),
-    siteIcon: iconMaker(siteInfo)
-}
+  siteTitle: getTitle.get(),
+  siteDesc: getDesc.get(),
+  siteIcon: iconMaker(siteInfo),
+};
 ---
 
-<Homepage siteMeta={ siteMeta } postList={ postListDate } topics={ topics }>
-</Homepage>
+<Homepage siteMeta={siteMeta} postList={postListDate} topics={topics} />

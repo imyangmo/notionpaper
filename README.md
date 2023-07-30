@@ -23,7 +23,7 @@ You are more than welcome to make this project better.
 
 ## How to use
 ### Deploy on Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fimyangmo%2Fnotionpaper&env=DATABASE_ID,NOTION_TOKEN,NOTION_VERSION,NOTION_API_BASE_URL)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fimyangmo%2Fnotionpaper&env=DATABASE_ID,NOTION_TOKEN,THEME)
 
 Click button above to deploy on Vercel.
 
@@ -230,7 +230,8 @@ Check [this](https://npdocs.dreambulare.com/post/f5f1a4b4-6dbe-4e03-a22d-6f33c13
 
 
 ## Update Notes
-**2023.7.10**
- - OPTI: Rewrote the default theme by using DaisyUI, now it looks much better now.
+**2023.7.30**
+ - OPTI: Removed `NOTION_VERSION` and `NOTION_API_BASE_URL` from environment variable
+ - OPTI: Used dynamic import feature by Vite so that Notionpaper can read customized theme path now by setting environmental variable `THEME`
 
 Notes histories see [here](./UpdateNotes.md).
