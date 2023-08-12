@@ -1,4 +1,4 @@
-<h1 align="center">NotionPaper</h1>
+<h1 align="center">NotionPaper (Beta)</h1>
 <p align="center">
   <i>NotionPaper is tool that helps you generate static sites from Notion, so that you can use Notion like a CMS.</i>
    <br/>
@@ -8,6 +8,9 @@
   <br/><br/>
 </p>
 
+📌 **Major Update:** Notionpaper now supports SSR, which means you don't need to re-deploy your site everytime you changed your content.
+
+📌 Check out: [Notionpaper-SSR (Beta)](https://github.com/imyangmo/notionpaper_ssr).
 
 ## Why NotionPaper
 My initial thoughts are simple: I want a blogging platform that is simple and good to use enough, so that I could focus on writing instead of setting up a bulky environment. 
