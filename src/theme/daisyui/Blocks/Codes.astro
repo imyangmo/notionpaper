@@ -1,8 +1,8 @@
 ---
-import { Code } from 'astro/components';
-
+import { Prism } from "@astrojs/prism";
+import "./prism-shades-of-purple.css";
 
 const { block } = Astro.props;
-
 ---
-<Code code={block.code} lang={block.language}></Code>
+
+<Prism lang={block.language} code={block.code} />

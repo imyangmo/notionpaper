@@ -11,62 +11,89 @@ import {
 } from "../components/SiteMeta.js";
 import { iconMaker } from "../components/Utils";
 
-const theme = import.meta.env.THEME;
+import { getSiteMeta, getPostList, getTopics } from "../components/APIHandlers";
+
+const rt = import.meta.env.RUNTIME.split("-")[0];
+const mode = import.meta.env.RUNTIME.split("-")[1];
+
 //------
 // import Homepage from "../theme/layouts/Homepage.astro";
 //------
 
-const Homepage = (await import(`../theme/${theme}/Homepage.astro`)).default;
+//------
+// const siteInfo = await siteInfoFetcher();
+// setTitle(siteInfo.title[0].plain_text);
+// setDesc(siteInfo.description[0].plain_text);
+//------
+let siteMeta;
+let postListData;
+let topicData;
+if (mode === "ssr") {
+  const smresp = await fetch(`${Astro.url.origin}/api/sitemeta.json`);
+  siteMeta = await smresp.json();
 
-const siteInfo = await siteInfoFetcher();
-setTitle(siteInfo.title[0].plain_text);
-setDesc(siteInfo.description[0].plain_text);
+  const plresp = await fetch(`${Astro.url.origin}/api/posts.json`);
+  postListData = await plresp.json();
 
-const postListResp = await indexFetcher();
-const postListDate = indexParser(postListResp.results);
+  const tresp = await fetch(`${Astro.url.origin}/api/topics.json`);
+  topicData = await tresp.json();
+} else if (mode === "ssg") {
+  siteMeta = await getSiteMeta();
+  postListData = await getPostList();
+  topicData = await getTopics();
+}
 
-const postList = postListDate.map((item) => {
-  return item.id;
-});
-setPostList(postList);
+// console.log(topicData);
+
+// const postListResp = await indexFetcher();
+// const postListData = indexParser(postListResp.results);
+
+// following code is for SSG
+// const postList = postListData.map((item) => {
+//   return item.id;
+// });
+// setPostList(postList);
 
 //generate topic list
-let topics = [];
-let topicIndex = [];
-postListDate.forEach((each) => {
-  const thisPost = {
-    id: each.id,
-    title: each.title,
-    date: each.date,
-    time: each.time,
-  };
+// let topics = [];
+// let topicIndex = [];
+// postListData.forEach((each) => {
+//   const thisPost = {
+//     id: each.id,
+//     title: each.title,
+//     date: each.date,
+//     time: each.time,
+//   };
 
-  if (each.topicID == "") {
-    console.log("Empty topic, skipped");
-  } else {
-    if (topicIndex.includes(each.topicID)) {
-      topics.forEach((eachTopic) => {
-        if (eachTopic.topicID == each.topicID) {
-          eachTopic.post.push(thisPost);
-        }
-      });
-    } else {
-      topics.push({
-        topicID: each.topicID,
-        topicName: each.topicName,
-        post: [thisPost],
-      });
-      topicIndex.push(each.topicID);
-    }
-  }
-});
-setTopics(topics);
+//   if (each.topicID == "") {
+//     console.log("Empty topic, skipped");
+//   } else {
+//     if (topicIndex.includes(each.topicID)) {
+//       topics.forEach((eachTopic) => {
+//         if (eachTopic.topicID == each.topicID) {
+//           eachTopic.post.push(thisPost);
+//         }
+//       });
+//     } else {
+//       topics.push({
+//         topicID: each.topicID,
+//         topicName: each.topicName,
+//         post: [thisPost],
+//       });
+//       topicIndex.push(each.topicID);
+//     }
+//   }
+// });
+// setTopics(topics);
 
-const siteMeta = {
-  siteTitle: getTitle.get(),
-  siteDesc: getDesc.get(),
-  siteIcon: iconMaker(siteInfo),
-};
+// const siteMeta = {
+//   siteTitle: getTitle.get(),
+//   siteDesc: getDesc.get(),
+//   siteIcon: iconMaker(siteInfo),
+// };
+
+const theme = import.meta.env.THEME;
+const Homepage = (await import(`../theme/${theme}/Homepage.astro`)).default;
 ---
 
-<Homepage siteMeta={siteMeta} postList={postListDate} topics={topics} />
+<Homepage siteMeta={siteMeta} postList={postListData} topics={topicData} />

@@ -6,55 +6,53 @@ import Footer from "./Footer.astro";
 
 import Block from "./Block.astro";
 
-const { siteMeta, pageMeta, fullPageContents, topics } = Astro.props;
+const { siteMeta, pageData, topics } = Astro.props;
 
-const thisTitle = pageMeta.pageTitle + " - " + siteMeta.siteTitle;
+const thisTitle = pageData.pageTitle + " - " + siteMeta.siteTitle;
 ---
 
 <Skeleton
-    pageTitle={thisTitle}
-    siteDesc={siteMeta.siteDesc}
-    siteIcon={pageMeta.pageIcon}
+  pageTitle={thisTitle}
+  siteDesc={siteMeta.siteDesc}
+  siteIcon={pageData.pageIcon}
 >
-    <Header siteTitle={siteMeta.siteTitle} topics={topics} />
-    <div
-        class="hero article-hero"
-        style={"background-image: url(" + pageMeta.pageCover + ")"}
-    >
-        <div class="hero-overlay bg-opacity-60"></div>
-        <div class="hero-content text-center text-neutral-content">
-            <div class="max-w-prose">
-                <h1
-                    class="italic text-slate-700 bg-gray-100 py-2 mb-5 text-5xl font-bold"
+  <Header siteTitle={siteMeta.siteTitle} topics={topics} />
+  <div
+    class="hero article-hero"
+    style={"background-image: url(" + pageData.pageCover + ")"}
+  >
+    <div class="hero-overlay bg-opacity-60"></div>
+    <div class="hero-content text-center text-neutral-content">
+      <div class="max-w-prose">
+        <h1
+          class="italic text-slate-700 bg-gray-100 py-2 mb-5 text-5xl font-bold"
+        >
+          {pageData.pageTitle}
+        </h1>
+        <p class="text-slate-700 bg-gray-100 py-2 mb-5 italic">
+          Create At: {pageData.createdDate + " " + pageData.createdTime}
+        </p>
+        {
+          pageData.pageTags.length == 0 ? null : (
+            <p class=" py-2 mb-5">
+              Tags:{" "}
+              {pageData.pageTags.map((tag) => (
+                <span
+                  class={`rounded-full text-white px-2.5 mr-1 ${tag.color}_background`}
                 >
-                    {pageMeta.pageTitle}
-                </h1>
-                <p class="text-slate-700 bg-gray-100 py-2 mb-5 italic">
-                    Create At: {
-                        pageMeta.createdDate + " " + pageMeta.createdTime
-                    }
-                </p>
-                {
-                    pageMeta.pageTags.length == 0 ? null : (
-                        <p class=" py-2 mb-5">
-                            Tags:{" "}
-                            {pageMeta.pageTags.map((tag) => (
-                                <span
-                                    class={`rounded-full text-white px-2.5 mr-1 ${tag.color}_background`}
-                                >
-                                    {tag.name}
-                                </span>
-                            ))}{" "}
-                        </p>
-                    )
-                }
-            </div>
-        </div>
+                  {tag.name}
+                </span>
+              ))}{" "}
+            </p>
+          )
+        }
+      </div>
     </div>
+  </div>
 
-    <article class="prose lg:prose-xl mx-auto pt-4">
-        {fullPageContents.map((block) => <Block block={block} />)}
-    </article>
+  <article class="prose lg:prose-xl mx-auto pt-4">
+    {pageData.pageContent.map((block) => <Block block={block} />)}
+  </article>
 
-    <Footer />
+  <Footer />
 </Skeleton>

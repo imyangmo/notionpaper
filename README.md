@@ -1,16 +1,12 @@
 <h1 align="center">NotionPaper (Beta)</h1>
 <p align="center">
-  <i>NotionPaper is tool that helps you generate static sites from Notion, so that you can use Notion like a CMS.</i>
+  <i>NotionPaper is tool that helps you use Notion like a CMS.</i>
    <br/>
   <img width="120" src="./logo.png" />
   <br/>
-  <b><a href="https://dreambulare.com/">Blog Usage Showcase</a></b> | <b><a href="https://npdocs.dreambulare.com/post/6262938e-86d0-4214-af03-63078eb01ce3/">Getting Started</a></b> | <b><a href="https://npdocs.dreambulare.com/">Documentation</a></b> | <b><a href="https://github.com/imyangmo/notionpaper">GitHub</a></b>
+  <b><a href="https://dreambulare.com/">Blog Usage Showcase</a></b> | <b><a href="https://np.dreambulare.com/9696241a-abad-4807-a8ee-b5452ab68cb9">Getting Started</a></b> | <b><a href="https://np.dreambulare.com/">Documentation</a></b> | <b><a href="https://github.com/imyangmo/notionpaper">GitHub</a></b>
   <br/><br/>
 </p>
-
-📌 **Major Update:** Notionpaper now supports SSR, which means you don't need to re-deploy your site everytime you changed your content.
-
-📌 Check out: [Notionpaper-SSR (Beta)](https://github.com/imyangmo/notionpaper_ssr).
 
 ## Why NotionPaper
 My initial thoughts are simple: I want a blogging platform that is simple and good to use enough, so that I could focus on writing instead of setting up a bulky environment. 
@@ -30,28 +26,7 @@ You are more than welcome to make this project better.
 
 Click button above to deploy on Vercel.
 
-Tutorials can be found on [here](https://npdocs.dreambulare.com/post/fd7a3ccb-357f-4b21-ad07-c17a5dfd54af).
-
-
-### Run Locally
-If you prefer run this tool locally and deploy to a desired destination, you could follow these steps:
-Short version:
-1. Clone this repo;
-2. Install Node.js 18.x and dependencies;
-3. Apply for Notion API token;
-4. Prepare the database;
-5. Fill the token and database ID in the config file;
-6. Run `npm run build`;
-7. Deploy.
-
-Full guide see [this](https://npdocs.dreambulare.com/post/6262938e-86d0-4214-af03-63078eb01ce3/) doc.
-
-
-### Run on Github Actions
-Check [this](https://npdocs.dreambulare.com/post/f5f1a4b4-6dbe-4e03-a22d-6f33c130d84e/) doc if you:
-- Do not wish / know how to run Notionpaper locally on your computer
-- Do not wish to upload your site after every generation
-- have restricted Internet access (from certain regions of the world)
+For environment variable settings, please check tutorials on [here](https://np.dreambulare.com/).
 
 ## Supported Features / Roadmap
 <table>
@@ -233,8 +208,7 @@ Check [this](https://npdocs.dreambulare.com/post/f5f1a4b4-6dbe-4e03-a22d-6f33c13
 
 
 ## Update Notes
-**2023.7.30**
- - OPTI: Removed `NOTION_VERSION` and `NOTION_API_BASE_URL` from environment variable
- - OPTI: Used dynamic import feature by Vite so that Notionpaper can read customized theme path now by setting environmental variable `THEME`
+**2023.8.13**
+ - Notionpaper can change your content dynamically by using SSR now, you don't need to re-deploy to update your site after every change.
 
 Notes histories see [here](./UpdateNotes.md).

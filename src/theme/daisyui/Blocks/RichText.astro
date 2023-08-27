@@ -1,18 +1,24 @@
 ---
 const { content } = Astro.props;
-// console.log(content)
+// console.log(content);
 ---
+
 {
-    content.map((each) => (
-        each.link == null
-        ?
-        <>
-            <span class={each.annotations + ' ' + each.color }>{ each.content }</span>
-        </>
-        :
-        <>
-            <a href={each.link} class={each.annotations + ' ' + each.color } target="_blank">{ each.content }</a>
-        </>
-    )
-)
+  content.map((each) =>
+    each.link === null ? (
+      <>
+        <span class:list={[each.annotations, each.color]}>{each.content}</span>
+      </>
+    ) : (
+      <>
+        <a
+          href={each.link}
+          class:list={[each.annotations, each.color, "link", "link-primary"]}
+          target="_blank"
+        >
+          {each.content}
+        </a>
+      </>
+    ),
+  )
 }

@@ -1,4 +1,9 @@
 # Update Notes
+**2023.7.30**
+ - OPTI: Removed `NOTION_VERSION` and `NOTION_API_BASE_URL` from environment variable
+ - OPTI: Used dynamic import feature by Vite so that Notionpaper can read customized theme path now by setting environmental variable `THEME`
+---
+
 **2023.7.10**
  - OPTI: Rewrote the default theme by using DaisyUI, now it looks much better now.
 ---

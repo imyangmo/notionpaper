@@ -1,0 +1,42 @@
+---
+// import Topic from '../../theme/layouts/Topic.astro';
+
+// import { getTitle, getDesc, getTopics } from "../../components/SiteMeta.js";
+
+import { getSiteMeta, getTopics } from "../../components/APIHandlers";
+const { tid } = Astro.params;
+const rt = import.meta.env.RUNTIME.split("-")[0];
+const mode = import.meta.env.RUNTIME.split("-")[1];
+console.log(tid);
+
+let siteMeta;
+let topicData;
+if (mode === "ssr") {
+  const smresp = await fetch(`${Astro.url.origin}/api/sitemeta.json`);
+  siteMeta = await smresp.json();
+
+  const tresp = await fetch(`${Astro.url.origin}/api/topics.json`);
+  topicData = await tresp.json();
+} else if (mode === "ssg") {
+  siteMeta = await getSiteMeta();
+  topicData = await getTopics();
+}
+
+const topicPosts = topicData.filter((topic) => topic.topicID == tid);
+export async function getStaticPaths() {
+  const topicData = await getTopics();
+  //todo
+
+  return topicData.map((each) => {
+    return {
+      params: { tid: each.topicID },
+    };
+  });
+}
+
+// must be placed at the bottom or it will throw 'im not defined' error
+const theme = import.meta.env.THEME;
+const Topic = (await import(`../../theme/${theme}/Topic.astro`)).default;
+---
+
+<Topic siteMeta={siteMeta} topics={topicData} topicPosts={topicPosts[0]} />

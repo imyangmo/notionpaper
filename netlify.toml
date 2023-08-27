@@ -1,0 +1,7 @@
+[template.environment]
+# check https://np.dreambulare.com for more info
+  DATABASE_ID = "xxxxxxx"
+  NOTION_TOKEN = "xxxxx"
+  GOOGLE_ANALYTICS = "xxxx"
+  THEME = "daisyui'
+  RUNTIME = "netlify-ssr"

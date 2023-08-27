@@ -11,11 +11,11 @@ export const dateFormatter = (input) => {
     const time = input.match(timePattern);
     const date = input.match(datePattern);
 
-    if(time != null ){
+    if (time != null) {
         result.time = time[0]
     };
 
-    if(date != null){
+    if (date != null) {
         result.date = date[0]
     };
 
@@ -23,14 +23,14 @@ export const dateFormatter = (input) => {
 
 };
 
-export function youtubeParser(addr){
+export function youtubeParser(addr) {
     // modified from: https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
     const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     const match = addr.match(regExp);
-    return (match&&match[7].length==11)? match[7] : null;
+    return (match && match[7].length == 11) ? match[7] : null;
 }
 
-export function fileExtNameParser(addr){
+export function fileExtNameParser(addr) {
     const thisurl = new URL(addr);
     const urlPath = thisurl.pathname;
 
@@ -39,9 +39,9 @@ export function fileExtNameParser(addr){
     return match == null ? '' : match[0]
 }
 
-export function iconMaker(data){
-    if(data.icon !== null){
-        switch(data.icon.type){
+export function iconMaker(data) {
+    if (data.icon !== null) {
+        switch (data.icon.type) {
             case 'emoji':
                 return 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>' + data.icon.emoji + '</text></svg>'
                 break;
@@ -54,7 +54,5 @@ export function iconMaker(data){
             default:
                 break;
         }
-    }else{
-        return "./favicon.svg";
     }
 }

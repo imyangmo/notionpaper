@@ -5,6 +5,24 @@ import { v4 as uuidv4 } from 'uuid';
 import Downloader from "nodejs-file-downloader";
 import { getImage } from '@astrojs/image';
 
+const rt = import.meta.env.RUNTIME.split('-')[0];
+const mode = import.meta.env.RUNTIME.split('-')[1];
+let buildDir
+if (rt === 'vercel') {
+    buildDir = './.vercel/output/static/post/assets'
+} else {
+    buildDir = './dist/post/assets'
+}
+
+function hasDomain(url) {
+    try {
+        const urlObj = new URL(url);
+        return urlObj.hostname !== '';
+    } catch (e) {
+        return false;
+    }
+}
+
 export const indexParser = (data) => {
     let content = [];
 
@@ -88,25 +106,42 @@ const richTextParser = (data) => {
             but simply put two text decoration styles together
             will be override by another, so this needs to be handle seperately.
             */
-            let anno = '';
+            // console.log(data)
+            let anno = [];
             if (data.annotations.strikethrough && data.annotations.underline) {
-                anno = anno + ' standul';
+                // anno = anno + ' standul';
+                anno.push('standul')
+                // Append rest of annotaitons
+                for (let [key, value] of Object.entries(data.annotations)) {
+                    if (key != 'color' && key !== 'strikethrough' && key !== 'underline' && value) {
+                        // Skip color annotation and others that does not applied
+                        // anno = anno + ' ' + key
+                        anno.push(key)
+                    }
+                }
             } else {
                 // Append rest of annotaitons
                 for (let [key, value] of Object.entries(data.annotations)) {
                     if (key != 'color' && value) {
                         // Skip color annotation and others that does not applied
-                        anno = anno + ' ' + key
+                        // anno = anno + ' ' + key
+                        anno.push(key)
                     }
                 }
             };
+
 
             text.content = data.plain_text;
             text.color = data.annotations.color;
             text.annotations = anno;
 
             if (data.href != null) {
-                text.link = data.href;
+                if (hasDomain(data.href)) {
+                    text.link = data.href;
+                } else {
+                    text.link = 'https://notion.so' + data.href;
+                }
+
             } else {
                 text.link = null;
             };
@@ -180,14 +215,18 @@ async function blockParser(data) {
         case 'image':
             switch (data[data.type].type) {
                 case 'file':
-                    const rdmName = uuidv4();
-                    const downloader = new Downloader({
-                        url: data[data.type].file.url,
-                        directory: "./.vercel/output/static/post/assets",
-                        fileName: rdmName
-                    });
-                    await downloader.download();
-                    block.url = "/post/assets/" + rdmName
+                    if (mode === 'ssg') {
+                        const rdmName = uuidv4();
+                        const downloader = new Downloader({
+                            url: data[data.type].file.url,
+                            directory: buildDir,
+                            fileName: rdmName
+                        });
+                        await downloader.download();
+                        block.url = "/post/assets/" + rdmName
+                    } else if (mode === 'ssr') {
+                        block.url = data[data.type].file.url;
+                    }
                     break;
                 case 'external':
                     block.type = 'image_external';
@@ -198,14 +237,18 @@ async function blockParser(data) {
         case 'video':
             switch (data[data.type].type) {
                 case 'file':
-                    const rdmName = uuidv4();
-                    const downloader = new Downloader({
-                        url: data[data.type].file.url,
-                        directory: "./.vercel/output/static/post/assets",
-                        fileName: rdmName
-                    });
-                    await downloader.download();
-                    block.url = "/post/assets/" + rdmName
+                    if (mode === 'ssg') {
+                        const rdmName = uuidv4();
+                        const downloader = new Downloader({
+                            url: data[data.type].file.url,
+                            directory: buildDir,
+                            fileName: rdmName
+                        });
+                        await downloader.download();
+                        block.url = "/post/assets/" + rdmName
+                    } else if (mode === 'ssr') {
+                        block.url = data[data.type].file.url;
+                    }
                     break;
                 case 'external':
                     const explode = data[data.type].external.url.split(".");
@@ -224,15 +267,28 @@ async function blockParser(data) {
             block.listItems = data[data.type].rich_text.map((item) => richTextParser(item));
             break;
         case 'file':
-            const extName = fileExtNameParser(data[data.type].file.url);
-            const rdmName = uuidv4() + extName;
-            const downloader = new Downloader({
-                url: data[data.type].file.url,
-                directory: "./dist/post/assets",
-                fileName: rdmName
-            });
-            await downloader.download();
-            block.url = "../assets/" + rdmName;
+            // const extName = fileExtNameParser(data[data.type].file.url);
+            // const rdmName = uuidv4() + extName;
+            // const downloader = new Downloader({
+            //     url: data[data.type].file.url,
+            //     directory: "./dist/post/assets",
+            //     fileName: rdmName
+            // });
+            // await downloader.download();
+            // block.url = "../assets/" + rdmName;
+            // break;
+            if (mode === 'ssg') {
+                const rdmName = uuidv4();
+                const downloader = new Downloader({
+                    url: data[data.type].file.url,
+                    directory: buildDir,
+                    fileName: rdmName
+                });
+                await downloader.download();
+                block.url = "/post/assets/" + rdmName
+            } else if (mode === 'ssr') {
+                block.url = data[data.type].file.url;
+            }
             break;
     };
 
